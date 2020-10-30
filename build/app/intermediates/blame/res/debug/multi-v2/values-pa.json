@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "C:\\Users\\bened\\AndroidStudioProjects\\smartqueue\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-pa\\values-pa.xml",
+            "outputFile": "C:\\Users\\dani-\\git\\smartqueue\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-pa\\values-pa.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\bened\\.gradle\\caches\\transforms-2\\files-2.1\\f9195a6a53e4c9b189fccd6a1129f76f\\jetified-play-services-basement-17.0.0\\res\\values-pa\\values.xml",
+                    "source": "C:\\Users\\dani-\\.gradle\\caches\\transforms-2\\files-2.1\\a8c14cf4daa6ad76ce1a57427a66bedb\\jetified-play-services-basement-17.0.0\\res\\values-pa\\values.xml",
                     "from": {
                         "startLines": "4",
                         "startColumns": "0",
@@ -21,7 +21,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\bened\\.gradle\\caches\\transforms-2\\files-2.1\\44b1706abe044cd42dcac5be863451ed\\core-1.1.0\\res\\values-pa\\values-pa.xml",
+                    "source": "C:\\Users\\dani-\\.gradle\\caches\\transforms-2\\files-2.1\\44b1706abe044cd42dcac5be863451ed\\core-1.1.0\\res\\values-pa\\values-pa.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
