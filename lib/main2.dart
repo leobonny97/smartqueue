@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smartqueue/QR.dart';
 
 void main() => runApp(MyApp());
 
