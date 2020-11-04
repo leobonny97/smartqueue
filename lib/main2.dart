@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:smartqueue/QR.dart';
+import 'package:qrscan/qrscan.dart' as scanner;
 
 void main() => runApp(MyApp());
 
@@ -73,7 +73,7 @@ class MyStatelessWidget extends StatelessWidget {
             right: 10,
             child: RaisedButton(
               onPressed: () {
-                print("Button clicked");
+                _scan();
                 },
               color: Colors.blue,
               elevation: 10,
@@ -88,4 +88,10 @@ class MyStatelessWidget extends StatelessWidget {
       )
     );
   }
+
+  Future _scan() async {
+    String barcode = await scanner.scan();
+    //dobbiamo passare il barcode a qualcuno
+  }
+
 }
