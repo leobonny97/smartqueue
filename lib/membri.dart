@@ -41,6 +41,7 @@ class MyStatelessWidget extends StatelessWidget {
   }
 }
 Widget getList() {
+  //l'array deve essere dato in input a getList
   final members = [
     'nome e cognome',
     'nome e cognome',
