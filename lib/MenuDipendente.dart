@@ -12,7 +12,6 @@ class MyApp extends StatelessWidget {
       title: _title,
       home: Scaffold(
         appBar: AppBar(title: const Text(_title)),
-        backgroundColor: Colors.orange,
         body: MyStatelessWidget(),
       ),
     );
@@ -27,44 +26,84 @@ class MyStatelessWidget extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return Scaffold(
-        backgroundColor: Colors.orange,
-        body: SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                Container(
-                  alignment: Alignment.center,
-                  padding: EdgeInsets.only(top: 150, left: 20, right: 20),
-                  child: RaisedButton(
-                    onPressed: () {
-                      //ancora niente
-                    },
-                    color: Colors.blue,
-                    elevation: 10,
-                    child: Text("Gestisci coda", style: TextStyle(fontSize: 20, color: Colors.white),),
-                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 40),
-                    shape: StadiumBorder(
-                      side: BorderSide(color: Colors.black, width: 1),
+        body: Stack(
+          children: <Widget>[
+            Container(
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        Color.fromARGB(255, 36, 63, 254),
+                        Color.fromARGB(255, 193, 121, 197),
+                        Color.fromARGB(255, 255, 144, 35)
+                      ]
+                  )
+              ),
+            ),
+            SingleChildScrollView(
+                child: Column(
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(top: 35, left: 130, right: 130, bottom: 60),
+                      child: Image.asset(
+                        "assets/images/Logo1.png",
+                      ),
                     ),
-                  ),
-                ),
-                Container(
-                  alignment: Alignment.center,
-                  padding: EdgeInsets.only(top: 100, left: 20, right: 20),
-                  child: RaisedButton(
-                    onPressed: () {
-                      //ancora niente
-                    },
-                    color: Colors.blue,
-                    elevation: 10,
-                    child: Text("Mostra QR Code", style: TextStyle(fontSize: 20, color: Colors.white),),
-                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 40),
-                    shape: StadiumBorder(
-                      side: BorderSide(color: Colors.black, width: 1),
+                    Padding(
+                        padding: EdgeInsets.only(top: 16, bottom: 32, left: 60, right: 60),
+                        child: SizedBox(
+                          width: double.infinity,
+                          child: RaisedButton(
+                            onPressed: () {
+                              print("Mostra QR-Code");
+                            },
+                            color: Color(0x00000000),
+                            elevation: 50,
+                            child: Text(
+                              "Mostra QR-Code",
+                              style: TextStyle(
+                                  fontSize: 22,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold
+                              ),
+                            ),
+                            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                            shape: StadiumBorder(
+                              side: BorderSide(color: Colors.white, width: 1),
+                            ),
+                          ),
+                        )
                     ),
-                  ),
+                    Padding(
+                        padding: EdgeInsets.only(top: 16, bottom: 32, left: 60, right: 60),
+                        child: SizedBox(
+                          width: double.infinity,
+                          child: RaisedButton(
+                            onPressed: () {
+                              print("Gestisci coda");
+                            },
+                            color: Color(0x00000000),
+                            elevation: 50,
+                            child: Text(
+                              "Gestisci coda",
+                              style: TextStyle(
+                                  fontSize: 22,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold
+                              ),
+                            ),
+                            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                            shape: StadiumBorder(
+                              side: BorderSide(color: Colors.white, width: 1),
+                            ),
+                          ),
+                        )
+                    ),
+                  ],
                 )
-              ],
             )
+          ],
         )
     );
   }
