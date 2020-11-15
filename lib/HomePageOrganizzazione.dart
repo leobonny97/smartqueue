@@ -1,106 +1,194 @@
 import 'package:flutter/material.dart';
-import 'package:smartqueue/QR.dart';
 
 void main() => runApp(MyApp());
 
-/// This is the main application widget.
 class MyApp extends StatelessWidget {
-  static const String _title = 'SmartQueue';
-
   @override
   Widget build(BuildContext context) {
+    final appTitle = 'SmarQueue';
+
     return MaterialApp(
-      title: _title,
+      title: appTitle,
       home: Scaffold(
-        appBar: AppBar(title: const Text(_title)),
-        backgroundColor: Colors.orange,
-        body: HomePageOrganizzazione(),
+        appBar: AppBar(
+          title: Text(appTitle),
+        ),
+        body: MyCustomForm(),
       ),
     );
   }
 }
 
-/// This is the stateless widget that the main application instantiates.
-class HomePageOrganizzazione extends StatelessWidget {
-  HomePageOrganizzazione({Key key}) : super(key: key);
+// Create a Form widget.
+class MyCustomForm extends StatefulWidget {
+  @override
+  MyCustomFormState createState() {
+    return MyCustomFormState();
+  }
+}
+
+class MyCustomFormState extends State<MyCustomForm> {
+
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
 
+    // Build a Form widget using the _formKey created above.
     return Scaffold(
-        backgroundColor: Colors.orange,
         body: Stack(
-          children: <Widget>[
-            Positioned(
-              top: 120,
-              right: 50,
-              left: 50,
-              child: RaisedButton(
-                onPressed: () {
-                  print("ButtonVisualizzaMembri clicked");
-                },
-                color: Colors.blue,
-                elevation: 10,
-                child: Text("Visualizza Membri", style: TextStyle(fontSize: 25, color: Colors.white),),
-                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 40),
-                shape: StadiumBorder(
-                  side: BorderSide(color: Colors.black, width: 1),
+            children: <Widget>[
+              Container(
+                decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          Color.fromARGB(255, 36, 63, 254),
+                          Color.fromARGB(255, 193, 121, 197),
+                          Color.fromARGB(255, 255, 144, 35)
+                        ]
+                    )
                 ),
               ),
-            ),
-            Positioned(
-              top: 250,
-              right: 50,
-              left: 50,
-              child: RaisedButton(
-                onPressed: () {
-                  print("ButtonAggiungiMembri clicked");
-                },
-                color: Colors.blue,
-                elevation: 10,
-                child: Text("Aggiungi Membri", style: TextStyle(fontSize: 25, color: Colors.white),),
-                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 40),
-                shape: StadiumBorder(
-                  side: BorderSide(color: Colors.black, width: 1),
+              SingleChildScrollView(
+                child: Center(
+                  child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Form(
+                          key: _formKey,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Padding(
+                                  padding: EdgeInsets.only(top: 35, left: 130, right: 130),
+                                  child: Image.asset(
+                                    "assets/images/Logo1.png",
+                                  ),
+                                ),
+                                Padding(padding: EdgeInsets.only(top: 30)),
+                                Padding(
+                                    padding: EdgeInsets.only(top: 16, bottom: 32, left: 60, right: 60),
+                                    child: SizedBox(
+                                      width: double.infinity,
+                                      child: RaisedButton(
+                                        onPressed: () {
+                                          print("ButtonVisualizzaMembri clicked ");
+                                        },
+                                        color: Color(0x00000000),
+                                        elevation: 50,
+                                        child: Text(
+                                          "Visualizza Membri",
+                                          style: TextStyle(
+                                              fontSize: 19,
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold
+                                          ),
+                                        ),
+                                        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 40),
+                                        shape: StadiumBorder(
+                                          side: BorderSide(color: Colors.white, width: 1),
+                                        ),
+                                      ),
+                                    )
+                                ),
+                                Padding(padding: EdgeInsets.only(top: 20)),
+                                Padding(
+                                    padding: EdgeInsets.only(top: 16, bottom: 32, left: 60, right: 60),
+                                    child: SizedBox(
+                                      width: double.infinity,
+                                      child: RaisedButton(
+                                        onPressed: () {
+                                          print("ButtonAggiungiMembri clicked ");
+                                        },
+                                        color: Color(0x00000000),
+                                        elevation: 50,
+                                        child: Text(
+                                          "Aggiungi Membri",
+                                          style: TextStyle(
+                                              fontSize: 20,
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold
+                                          ),
+                                        ),
+                                        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 40),
+                                        shape: StadiumBorder(
+                                          side: BorderSide(color: Colors.white, width: 1),
+                                        ),
+                                      ),
+                                    )
+                                ),
+                                Padding(padding: EdgeInsets.only(top: 20)),
+                                Padding(
+                                    padding: EdgeInsets.only(top: 16, bottom: 32, left: 60, right: 60),
+                                    child: SizedBox(
+                                      width: double.infinity,
+                                      child: RaisedButton(
+                                        onPressed: () {
+                                          print("ButtonMostraQRcode clicked ");
+                                        },
+                                        color: Color(0x00000000),
+                                        elevation: 50,
+                                        child: Text(
+                                          "Mostra QR code",
+                                          style: TextStyle(
+                                              fontSize: 22,
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold
+                                          ),
+                                        ),
+                                        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 40),
+                                        shape: StadiumBorder(
+                                          side: BorderSide(color: Colors.white, width: 1),
+                                        ),
+                                      ),
+                                    )
+                                ),
+                                Padding(padding: EdgeInsets.only(top: 20)),
+                                Padding(
+                                    padding: EdgeInsets.only(top: 16, bottom: 32, left: 60, right: 60),
+                                    child: SizedBox(
+                                      width: double.infinity,
+                                      child: RaisedButton(
+                                        onPressed: () {
+                                          print("ButtonGestisciCoda clicked ");
+                                        },
+                                        color: Color(0x00000000),
+                                        elevation: 50,
+                                        child: Text(
+                                          "Gestisci coda",
+                                          style: TextStyle(
+                                              fontSize: 23,
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold
+                                          ),
+                                        ),
+                                        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 40),
+                                        shape: StadiumBorder(
+                                          side: BorderSide(color: Colors.white, width: 1),
+                                        ),
+                                      ),
+                                    )
+                                ),
+                              ],
+                            ),
+                          ),
+                        )
+                      ],
+                  ),
                 ),
               ),
-            ),
-            Positioned(
-              bottom: 250,
-              right: 50,
-              left: 50,
-              child: RaisedButton(
-                onPressed: () {
-                  print("ButtonMostraQR clicked");
-                },
-                color: Colors.blue,
-                elevation: 10,
-                child: Text("Mostra QR code", style: TextStyle(fontSize: 25, color: Colors.white),),
-                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 40),
-                shape: StadiumBorder(
-                  side: BorderSide(color: Colors.black, width: 1),
-                ),
-              ),
-            ),
-            Positioned(
-              bottom: 120,
-              right: 50,
-              left: 50,
-              child: RaisedButton(
-                onPressed: () {
-                  print("ButtonGestisciCoda clicked");
-                },
-                color: Colors.blue,
-                elevation: 10,
-                child: Text("Gestisci coda", style: TextStyle(fontSize: 25, color: Colors.white),),
-                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 40),
-                shape: StadiumBorder(
-                  side: BorderSide(color: Colors.black, width: 1),
-                ),
-              ),
-            ),
-          ],
+            ]
         )
     );
   }
 }
+
+
+
+
+
