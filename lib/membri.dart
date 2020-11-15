@@ -62,8 +62,9 @@ class MyStatelessWidget extends StatelessWidget {
 Widget getList() {
   //l'array deve essere dato in input a getList
   final members = [
-    'nome e cognome',
-    'nome e cognome',
+    'Benedetto Sommese',
+    'Daniele Cesarano',
+    'Francesco Auriemma',
   ];
   final icons = [
     Icons.delete
@@ -71,9 +72,12 @@ Widget getList() {
   ListView myList = new ListView.builder(
       itemCount: members.length,
       itemBuilder: (context, index) {
-        return new ListTile(
-          leading: const Icon(Icons.delete, size: 25.0, color: Colors.red,),
-          title: Text(members[index], style: TextStyle(fontWeight: FontWeight.bold,),),
+        return new Card(
+          child: ListTile(
+            leading: const Icon(Icons.delete, size: 25.0, color: Colors.red,),
+            title: Text(members[index], style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25.0,),),
+            subtitle: Text("Ruolo: Dipendente"),
+          ),
         );
       });
   return myList;
