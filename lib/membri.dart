@@ -13,8 +13,14 @@ class MyApp extends StatelessWidget {
       title: _title,
       home: Scaffold(
         appBar: AppBar(title: const Text(_title)),
-        backgroundColor: Colors.orange,
-        body: MyStatelessWidget(),
+
+        body: Stack(
+            children: <Widget>[
+              Container(
+                child: MyStatelessWidget(),
+              ),
+            ],
+        ),
       ),
     );
   }
@@ -29,9 +35,22 @@ class MyStatelessWidget extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return Scaffold(
-        backgroundColor: Colors.orange,
+
         body: Stack(
             children: <Widget>[
+              Container(
+                decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          Color.fromARGB(255, 36, 63, 254),
+                          Color.fromARGB(255, 193, 121, 197),
+                          Color.fromARGB(255, 255, 144, 35)
+                        ]
+                    )
+                ),
+              ),
                   Center(
                     child: getList(),
                   ),
@@ -53,8 +72,8 @@ Widget getList() {
       itemCount: members.length,
       itemBuilder: (context, index) {
         return new ListTile(
-          leading: const Icon(Icons.delete, size: 25.0, color: Colors.red),
-          title: new Text(members[index]),
+          leading: const Icon(Icons.delete, size: 25.0, color: Colors.red,),
+          title: Text(members[index], style: TextStyle(fontWeight: FontWeight.bold,),),
         );
       });
   return myList;
