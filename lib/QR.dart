@@ -4,7 +4,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:image_gallery_saver/image_gallery_saver.dart';
+//import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:qrscan/qrscan.dart' as scanner;
 
@@ -143,7 +143,7 @@ class _MyAppState extends State<MyApp> {
                         Expanded(
                           flex: 5,
                           child: GestureDetector(
-                            onTap: () async {
+                            onTap: () async { /*
                               final success = await ImageGallerySaver.saveImage(this.bytes);
                               SnackBar snackBar;
                               if (success) {
@@ -152,7 +152,7 @@ class _MyAppState extends State<MyApp> {
                               } else {
                                 snackBar = new SnackBar(content: new Text('Save failed!'));
                               }
-                            },
+                            */},
                             child: Text(
                               'save',
                               style: TextStyle(fontSize: 15, color: Colors.blue),
