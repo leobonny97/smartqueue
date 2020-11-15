@@ -9,7 +9,7 @@ class MyApp extends StatelessWidget {
       title: 'SmarQueue',
       home: Scaffold(
         body:Center(
-            child:Coda(number: 0,)
+            child:Coda(number: 2,)
         ),
       ),
     );
@@ -32,179 +32,69 @@ class _CodaState extends State<Coda>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.orange,
       body: Stack(
         children: <Widget>[
-          Positioned(
-            left: 35,
-            right: 225,
-            top: 150,
-            child: Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12.0),
-              ),
-              child: InkWell(
-                splashColor: Colors.blue.withAlpha(30),
-                child: Container(
-                  alignment: Alignment.topCenter,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(10),
-                        topRight: Radius.circular(10),
-                        bottomLeft: Radius.circular(10),
-                        bottomRight: Radius.circular(10)
-                    ),
+          Container(
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      Color.fromARGB(255, 36, 63, 254),
+                      Color.fromARGB(255, 193, 121, 197),
+                      Color.fromARGB(255, 255, 144, 35)
+                    ]
+                )
+            ),
+          ),
 
-                  ),
-                  width: 300,
-                  height: 45,
-                  child: Center(
-                    child: new Text(
-                      'Serviamo il numero:',textAlign: TextAlign.start,
-                    ),
-                  ),
-                ),
+          Positioned(
+            top: 145,
+            right: 100,
+            left: 100,
+            child: Center(
+              child: new Text(
+                      'Il tuo numero è',textAlign: TextAlign.start,
+                style: TextStyle(fontSize: 25.0, color: Colors.white,fontWeight: FontWeight.bold,),
               ),
             ),
           ),
           Positioned(
-          left: 50,
-          right: 50,
-          top: 600,
-            child: Card(
-              shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12.0),
-            ),
-              child: InkWell(
-                splashColor: Colors.blue.withAlpha(30),
-
-              child: Container(
-                  alignment: Alignment.topCenter,
-                  decoration: BoxDecoration(
-                  color: Colors.green,
-                  borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(10),
-                  topRight: Radius.circular(10),
-                  bottomLeft: Radius.circular(10),
-                  bottomRight: Radius.circular(10)
-               ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.5),
-                  spreadRadius: 5,
-                  blurRadius: 7,
-                  offset: Offset(0, 3), // changes position of shadow
-                ),
-               ],
-              ),
-                width: 300,
-                height: 45,
-                  child: Center(
-                   child: new Text(
-                      'Tra 10 minuti è il tuo turno',textAlign: TextAlign.start,
-                    ),
-                  ),
-             ),
-            ),
-            ),
+            left: 100,
+            right: 100,
+            top: 180,
+            child: new CircleButton(number:number,),
           ),
+          //card remaining time and current number
           Positioned(
-            left: 180,
-            right: 50,
-            top: 80,
-                child: new CircleButton(number:number,),
-            ),
-          Positioned(
-            left: 35,
-            right: 222,
-            top: 375,
-            child: Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12.0),
-              ),
-              child: InkWell(
-                splashColor: Colors.blue.withAlpha(30),
-                child: Container(
-                  alignment: Alignment.topCenter,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(10),
-                        topRight: Radius.circular(10),
-                        bottomLeft: Radius.circular(10),
-                        bottomRight: Radius.circular(10)
-                    ),
-
+            left: 5,
+            right: 5,
+            top: 550,
+              child: Card(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  const ListTile(
+                    leading: Icon(Icons.timelapse,size: 72.0),
+                    title: Text('Stiamo servendo il numero: 1'),
+                    subtitle: Text('Tempo di attesa stimato: 5 minuti'),
                   ),
-                  width: 300,
-                  height: 50,
-                  child: Center(
-                    child: new Text(
-                      'Il tuo numero è:',textAlign: TextAlign.left,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-          Positioned(
-            left: 180,
-            right: 50,
-            top: 320,
-            child: Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12.0),
-              ),
-              child: InkWell(
-                splashColor: Colors.blue.withAlpha(30),
-                child: Container(
-                  alignment: Alignment.topCenter,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(10),
-                        topRight: Radius.circular(10),
-                        bottomLeft: Radius.circular(10),
-                        bottomRight: Radius.circular(10)
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.5),
-                        spreadRadius: 5,
-                        blurRadius: 7,
-                        offset: Offset(0, 3), // changes position of shadow
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      TextButton(
+                        child: const Text('Abbandona la coda',
+                           style: TextStyle(color: Colors.red,
+                           ),
+                          ),
+                          onPressed: () {/* ... */},
                       ),
                     ],
                   ),
-                  width: 300,
-                  height: 150,
-                  child: Center(
-                    child: new Text(
-                      '0',textAlign: TextAlign.left, style: TextStyle(fontSize: 51.0, color: Colors.black,),
-                    ),
-                  ),
+                ],
                 ),
               ),
             ),
-          ),
-          Positioned(
-            left: 50,
-            right: 50,
-            top: 680,
-            child: FlatButton(
-              textColor: Colors.black,
-              color: Colors.red,
-              onPressed: () {
-                // Respond to button press
-              },
-              child: Text("Lascia la coda"),
-              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 40),
-              shape: StadiumBorder(
-                side: BorderSide(color: Colors.black38, width: 2,),
-              ),
-            ),
-          ),
         ],
       ),
     );
@@ -236,12 +126,11 @@ class CircleButton extends StatelessWidget {
               ),
             ],
           ),
-
           child: Center(
             child: new Text(
               number.toString(), textScaleFactor: 4.0,
             ),
-          )
+          ),
       ),
     );
   }

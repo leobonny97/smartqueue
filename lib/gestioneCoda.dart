@@ -8,10 +8,13 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         title: 'SmarQueue',
         home: Scaffold(
-          body:Center(
-              child:GestioneCoda(number: 0,)
+          body:Stack(
+              children: <Widget>[
+                Center(
+                    child:GestioneCoda(number: 0,),
+                ),
+            ],
           ),
-
         ),
        );
   }
@@ -33,9 +36,29 @@ class _GestioneCodaState extends State<GestioneCoda>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.orange,
       body: Stack(
         children: <Widget>[
+          Container(
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      Color.fromARGB(255, 36, 63, 254),
+                      Color.fromARGB(255, 193, 121, 197),
+                      Color.fromARGB(255, 255, 144, 35)
+                    ]
+                )
+            ),
+          ),
+          Positioned(
+            left: 90,
+            right: 0,
+            top: 65,
+            child: Text("Il cliente servito è",
+              style: TextStyle(fontSize: 25.0, color: Colors.white,fontWeight: FontWeight.bold,),
+            ),
+          ),
           Positioned(
             left: 50,
             right: 50,
@@ -48,7 +71,7 @@ class _GestioneCodaState extends State<GestioneCoda>{
             top: 400,
             child: FlatButton(
               textColor: Colors.black,
-              color: Colors.green,
+              color: Colors.transparent,
               onPressed: () {
                 // Respond to button press
                 setState(() {
@@ -57,11 +80,11 @@ class _GestioneCodaState extends State<GestioneCoda>{
               },
               child: Text(
                 "Prossimo",
-                style: TextStyle(fontSize: 25.0, color: Colors.black,),
+                style: TextStyle(fontSize: 25.0, color: Colors.white,fontWeight: FontWeight.bold,),
               ),
               padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40),
               shape: StadiumBorder(
-                side: BorderSide(color: Colors.black38, width: 2,),
+                side: BorderSide(color: Colors.white, width: 2,),
               ),
             ),
           ),

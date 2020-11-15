@@ -13,8 +13,14 @@ class MyApp extends StatelessWidget {
       title: _title,
       home: Scaffold(
         appBar: AppBar(title: const Text(_title)),
-        backgroundColor: Colors.orange,
-        body: MyStatelessWidget(),
+
+        body: Stack(
+            children: <Widget>[
+              Container(
+                child: MyStatelessWidget(),
+              ),
+            ],
+        ),
       ),
     );
   }
@@ -29,9 +35,22 @@ class MyStatelessWidget extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return Scaffold(
-        backgroundColor: Colors.orange,
+
         body: Stack(
             children: <Widget>[
+              Container(
+                decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          Color.fromARGB(255, 36, 63, 254),
+                          Color.fromARGB(255, 193, 121, 197),
+                          Color.fromARGB(255, 255, 144, 35)
+                        ]
+                    )
+                ),
+              ),
                   Center(
                     child: getList(),
                   ),
@@ -43,8 +62,9 @@ class MyStatelessWidget extends StatelessWidget {
 Widget getList() {
   //l'array deve essere dato in input a getList
   final members = [
-    'nome e cognome',
-    'nome e cognome',
+    'Benedetto Sommese',
+    'Daniele Cesarano',
+    'Francesco Auriemma',
   ];
   final icons = [
     Icons.delete
@@ -52,9 +72,12 @@ Widget getList() {
   ListView myList = new ListView.builder(
       itemCount: members.length,
       itemBuilder: (context, index) {
-        return new ListTile(
-          leading: const Icon(Icons.delete, size: 25.0, color: Colors.red),
-          title: new Text(members[index]),
+        return new Card(
+          child: ListTile(
+            leading: const Icon(Icons.delete, size: 25.0, color: Colors.red,),
+            title: Text(members[index], style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25.0,),),
+            subtitle: Text("Ruolo: Dipendente"),
+          ),
         );
       });
   return myList;
