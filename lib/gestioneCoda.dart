@@ -52,6 +52,14 @@ class _GestioneCodaState extends State<GestioneCoda>{
             ),
           ),
           Positioned(
+            left: 90,
+            right: 0,
+            top: 65,
+            child: Text("Il cliente servito è",
+              style: TextStyle(fontSize: 25.0, color: Colors.white,fontWeight: FontWeight.bold,),
+            ),
+          ),
+          Positioned(
             left: 50,
             right: 50,
             top: 100,
