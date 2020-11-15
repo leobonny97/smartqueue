@@ -28,15 +28,38 @@ class _MyAppState extends State<MyApp> {
       home: Scaffold(
         appBar: AppBar(title: const Text(_title)),
         backgroundColor: Colors.orange,
-        body: Builder(
-          builder: (BuildContext context) {
-            return ListView(
-              children: <Widget>[
-                _qrCodeWidget(this.bytes, context),
-              ],
-            );
-          },
-        ),
+        body: Stack(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        Color.fromARGB(255, 36, 63, 254),
+                        Color.fromARGB(255, 193, 121, 197),
+                        Color.fromARGB(255, 255, 144, 35)
+                      ]
+                  )
+              ),
+            ),
+            Builder(
+              builder: (BuildContext context) {
+                return ListView(
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(top: 35, left: 130, right: 130),
+                      child: Image.asset(
+                        "assets/images/Logo1.png",
+                      ),
+                    ),
+                    _qrCodeWidget(this.bytes, context),
+                  ],
+                );
+              },
+            ),
+          ],
+        )
       ),
     );
   }
