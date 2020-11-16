@@ -162,7 +162,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                                     padding: const EdgeInsets.all(8.0),
                                     child: PasswordField(
                                       fieldKey: _passwordFieldKey,
-                                      helperText: 'No more than 8 characters.',
+                                      //helperText: 'No more than 8 characters.',
                                       labelText: 'Password ',
                                       onFieldSubmitted: (String value) {
                                         setState(() {
@@ -243,7 +243,7 @@ class _PasswordFieldState extends State<PasswordField> {
     return TextFormField(
       key: widget.fieldKey,
       obscureText: _obscureText,
-      maxLength: 8,
+      //maxLength: 8,
       onSaved: widget.onSaved,
       validator: widget.validator,
       onFieldSubmitted: widget.onFieldSubmitted,

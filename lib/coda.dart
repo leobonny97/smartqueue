@@ -6,7 +6,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'SmarQueue',
+      title: 'SmartQueue',
       home: Scaffold(
         body:Center(
             child:Coda(number: 2,)
@@ -55,7 +55,7 @@ class _CodaState extends State<Coda>{
             child: Center(
               child: new Text(
                       'Il tuo numero è',textAlign: TextAlign.start,
-                style: TextStyle(fontSize: 25.0, color: Colors.white,fontWeight: FontWeight.bold,),
+                style: TextStyle(fontSize: 22.0, color: Colors.white,fontWeight: FontWeight.bold,),
               ),
             ),
           ),

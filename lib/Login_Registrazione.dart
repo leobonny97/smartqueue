@@ -8,7 +8,7 @@ void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final appTitle = 'SmarQueue';
+    final appTitle = 'SmartQueue';
 
     return MaterialApp(
       title: appTitle,
@@ -104,7 +104,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                                     padding: const EdgeInsets.all(8.0),
                                     child: PasswordField(
                                       fieldKey: _passwordFieldKey,
-                                      helperText: 'No more than 8 characters.',
+                                      //helperText: 'No more than 8 characters.',
                                       labelText: 'Password ',
                                       onFieldSubmitted: (String value) {
                                         setState(() {
@@ -115,7 +115,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                                   ),
                                 ),
                                 Padding(
-                                    padding: EdgeInsets.only(top: 16, bottom: 32, left: 60, right: 60),
+                                    padding: EdgeInsets.only(top: 16, bottom: 32, left: 30, right: 30),
                                     child: SizedBox(
                                       width: double.infinity,
                                       child: RaisedButton(
@@ -151,13 +151,13 @@ class MyCustomFormState extends State<MyCustomForm> {
                                 Container(
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(horizontal:110.0),
-                                    child: Text("OPPURE", style: TextStyle(fontSize: 30, color: Colors.white,),textAlign: TextAlign.center,
+                                    child: Text("OPPURE", style: TextStyle(fontSize: 20, color: Colors.white,),textAlign: TextAlign.center,
                                     ),
                                   ),
                                 ),
                                 Padding(padding: EdgeInsets.only(top: 30)),
                                 Padding(
-                                    padding: EdgeInsets.only(top: 16, bottom: 32, left: 60, right: 60),
+                                    padding: EdgeInsets.only(top: 16, bottom: 32, left: 30, right: 30),
                                     child: SizedBox(
                                       width: double.infinity,
                                       child: RaisedButton(
@@ -198,6 +198,7 @@ class MyCustomFormState extends State<MyCustomForm> {
 }
 
 
+
 class PasswordField extends StatefulWidget {
   const PasswordField({
     this.fieldKey,
@@ -229,7 +230,7 @@ class _PasswordFieldState extends State<PasswordField> {
     return TextFormField(
       key: widget.fieldKey,
       obscureText: _obscureText,
-      maxLength: 8,
+      //maxLength: 8,
       onSaved: widget.onSaved,
       validator: widget.validator,
       onFieldSubmitted: widget.onFieldSubmitted,

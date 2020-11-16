@@ -75,7 +75,7 @@ Widget getList() {
         return new Card(
           child: ListTile(
             leading: const Icon(Icons.delete, size: 25.0, color: Colors.red,),
-            title: Text(members[index], style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25.0,),),
+            title: Text(members[index], style: TextStyle(fontWeight: FontWeight.bold,fontSize: 22.0,),),
             subtitle: Text("Ruolo: Dipendente"),
           ),
         );

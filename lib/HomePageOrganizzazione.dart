@@ -9,7 +9,7 @@ void main() => runApp(HomePageOrganizzazione());
 class HomePageOrganizzazione extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final appTitle = 'SmarQueue';
+    final appTitle = 'SmartQueue';
 
     return MaterialApp(
       title: appTitle,

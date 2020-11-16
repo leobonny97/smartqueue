@@ -136,7 +136,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                               ),
                               Padding(padding: EdgeInsets.only(top: 50)),
                               Padding(
-                                  padding: EdgeInsets.only(top: 16, bottom: 32, left: 60, right: 60),
+                                  padding: EdgeInsets.only(top: 16, bottom: 32, left: 40, right: 40),
                                   child: SizedBox(
                                     width: double.infinity,
                                     child: RaisedButton(
@@ -148,7 +148,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                                       child: Text(
                                         "Genera Account",
                                         style: TextStyle(
-                                            fontSize: 22,
+                                            fontSize: 20,
                                             color: Colors.white,
                                             fontWeight: FontWeight.bold
                                         ),
