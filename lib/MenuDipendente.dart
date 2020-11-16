@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-
-void main() => runApp(MyApp());
+import 'QRCode.dart';
+import 'gestioneCoda.dart';
 
 /// This is the main application widget.
-class MyApp extends StatelessWidget {
+class MenuDipendente extends StatelessWidget {
   static const String _title = 'SmartQueue';
 
   @override
@@ -57,6 +57,8 @@ class MyStatelessWidget extends StatelessWidget {
                           child: RaisedButton(
                             onPressed: () {
                               print("Mostra QR-Code");
+                              Route route = MaterialPageRoute(builder: (context) => QRCode());
+                              Navigator.push(context, route);
                             },
                             color: Color(0x00000000),
                             elevation: 50,
@@ -82,6 +84,8 @@ class MyStatelessWidget extends StatelessWidget {
                           child: RaisedButton(
                             onPressed: () {
                               print("Gestisci coda");
+                              Route route = MaterialPageRoute(builder: (context) => GestioneCoda());
+                              Navigator.push(context, route);
                             },
                             color: Color(0x00000000),
                             elevation: 50,

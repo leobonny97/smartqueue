@@ -4,16 +4,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:qrscan/qrscan.dart' as scanner;
 
-void main() {
-  runApp(MyApp());
-}
 
-class MyApp extends StatefulWidget {
+class QRCode extends StatefulWidget {
   @override
   _MyAppState createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _MyAppState extends State<QRCode> {
   Uint8List bytes = Uint8List(0);
   static const String _title = 'SmartQueue';
 

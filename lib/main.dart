@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:qrscan/qrscan.dart' as scanner;
 import 'package:flutter/material.dart';
 
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {

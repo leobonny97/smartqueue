@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 
-void main() => runApp(MyApp());
 
-class MyApp extends StatelessWidget {
+class GestioneCoda extends StatelessWidget {
+  static const String _title = 'SmartQueue';
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'SmarQueue',
+        title: 'SmartQueue',
         home: Scaffold(
+          appBar: AppBar(title: const Text(_title)),
           body:Stack(
               children: <Widget>[
                 Center(
-                    child:GestioneCoda(number: 0,),
+                    child:_GestioneCoda(number: 0,),
                 ),
             ],
           ),
@@ -20,14 +22,14 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class GestioneCoda extends StatefulWidget {
+class _GestioneCoda extends StatefulWidget {
   int number=0;
-  GestioneCoda({Key key,this.number}):super(key:key);
+  _GestioneCoda({Key key,this.number}):super(key:key);
   @override
   State<StatefulWidget>createState() => _GestioneCodaState(number);
 }
 
-class _GestioneCodaState extends State<GestioneCoda>{
+class _GestioneCodaState extends State<_GestioneCoda>{
    int number=0;
   _GestioneCodaState(int number){
     this.number=number;

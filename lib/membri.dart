@@ -4,7 +4,7 @@ import 'package:smartqueue/QR.dart';
 void main() => runApp(MyApp());
 
 /// This is the main application widget.
-class MyApp extends StatelessWidget {
+class membri extends StatelessWidget {
   static const String _title = 'SmartQueue';
 
   @override

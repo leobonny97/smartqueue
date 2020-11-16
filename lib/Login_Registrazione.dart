@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'MenuDipendente.dart';
+import 'RegistrazioneOrganizzazione.dart';
+import 'HomePageOrganizzazione.dart';
 
 void main() => runApp(MyApp());
 
@@ -118,6 +121,14 @@ class MyCustomFormState extends State<MyCustomForm> {
                                       child: RaisedButton(
                                         onPressed: () {
                                           print("ButtonLogin clicked email=$email password=$password");
+                                          if(email=="1") {
+                                            Route route = MaterialPageRoute(builder: (context) => MenuDipendente());
+                                            Navigator.push(context, route);
+                                          }
+                                          else {
+                                            Route route = MaterialPageRoute(builder: (context) => HomePageOrganizzazione());
+                                            Navigator.push(context, route);
+                                          }
                                         },
                                         color: Color(0x00000000),
                                         elevation: 50,
@@ -152,6 +163,8 @@ class MyCustomFormState extends State<MyCustomForm> {
                                       child: RaisedButton(
                                         onPressed: () {
                                           print("ButtonRegistrazione clicked ");
+                                          Route route = MaterialPageRoute(builder: (context) => RegistraOrganizzazione());
+                                          Navigator.push(context, route);
                                         },
                                         color: Color(0x00000000),
                                         elevation: 50,

@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'membri.dart';
+import 'GeneraAccountMembro.dart';
+import 'QRCode.dart';
+import 'gestioneCoda.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(HomePageOrganizzazione());
 
-class MyApp extends StatelessWidget {
+class HomePageOrganizzazione extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appTitle = 'SmarQueue';
@@ -78,6 +82,8 @@ class MyCustomFormState extends State<MyCustomForm> {
                                       child: RaisedButton(
                                         onPressed: () {
                                           print("ButtonVisualizzaMembri clicked ");
+                                          Route route = MaterialPageRoute(builder: (context) => membri());
+                                          Navigator.push(context, route);
                                         },
                                         color: Color(0x00000000),
                                         elevation: 50,
@@ -104,6 +110,8 @@ class MyCustomFormState extends State<MyCustomForm> {
                                       child: RaisedButton(
                                         onPressed: () {
                                           print("ButtonAggiungiMembri clicked ");
+                                          Route route = MaterialPageRoute(builder: (context) => GeneraAccountMembro());
+                                          Navigator.push(context, route);
                                         },
                                         color: Color(0x00000000),
                                         elevation: 50,
@@ -130,6 +138,8 @@ class MyCustomFormState extends State<MyCustomForm> {
                                       child: RaisedButton(
                                         onPressed: () {
                                           print("ButtonMostraQRcode clicked ");
+                                          Route route = MaterialPageRoute(builder: (context) => QRCode());
+                                          Navigator.push(context, route);
                                         },
                                         color: Color(0x00000000),
                                         elevation: 50,
@@ -156,6 +166,8 @@ class MyCustomFormState extends State<MyCustomForm> {
                                       child: RaisedButton(
                                         onPressed: () {
                                           print("ButtonGestisciCoda clicked ");
+                                          Route route = MaterialPageRoute(builder: (context) => GestioneCoda());
+                                          Navigator.push(context, route);
                                         },
                                         color: Color(0x00000000),
                                         elevation: 50,
