@@ -65,10 +65,17 @@ class MyCustomFormState extends State<MyCustomForm> {
                         Form(
                           key: _formKey,
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 100.0),
+                            padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 10.0),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
+                                Padding(
+                                  padding: EdgeInsets.only(top: 35, left: 130, right: 130),
+                                  child: Image.asset(
+                                    "assets/images/Logo1.png",
+                                  ),
+                                ),
+                                Padding(padding: EdgeInsets.only(top: 30)),
                                 Container(
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
