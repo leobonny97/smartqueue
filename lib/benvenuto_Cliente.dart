@@ -3,9 +3,9 @@ import 'package:qrscan/qrscan.dart' as scanner;
 import 'package:flutter/material.dart';
 
 
-void main() => runApp(MyApp());
 
-class MyApp extends StatelessWidget {
+
+class benvenuto_Cliente extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appTitle = 'SmartQueue';

@@ -3,9 +3,8 @@ import 'MenuDipendente.dart';
 import 'RegistrazioneOrganizzazione.dart';
 import 'HomePageOrganizzazione.dart';
 
-void main() => runApp(MyApp());
 
-class MyApp extends StatelessWidget {
+class Login_Registrazione extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appTitle = 'SmartQueue';
