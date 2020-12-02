@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'Service/AddOrganizzazione.dart';
 
 class RegistraOrganizzazione extends StatelessWidget {
   @override
@@ -178,7 +179,8 @@ class MyCustomFormState extends State<MyCustomForm> {
                                       width: double.infinity,
                                       child: RaisedButton(
                                         onPressed: () {
-                                          print("ButtonLogin clicked Nome Organizzazione=$nomeOr Nome titolare=$nomeT Cognome Titolare=$cognomeT email=$email password=$password");
+                                          print("Registrazione Nome Organizzazione=$nomeOr Nome titolare=$nomeT Cognome Titolare=$cognomeT email=$email password=$password");
+                                          AddOrganizzazione().addOrganizzazione(nomeOr);
                                         },
                                         color: Color(0x00000000),
                                         elevation: 50,
