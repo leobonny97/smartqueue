@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'MenuDipendente.dart';
 import 'RegistrazioneOrganizzazione.dart';
 import 'HomePageOrganizzazione.dart';
+import 'package:smartqueue/Service/Autenticazione.dart';
 
 
 class Login_Registrazione extends StatelessWidget {
@@ -32,9 +33,8 @@ class MyCustomForm extends StatefulWidget {
 // Create a corresponding State class.
 // This class holds data related to the form.
 class MyCustomFormState extends State<MyCustomForm> {
-  final GlobalKey<FormFieldState<String>> _passwordFieldKey =
-  GlobalKey<FormFieldState<String>>();
-
+  final GlobalKey<FormFieldState<String>> _passwordFieldKey = GlobalKey<FormFieldState<String>>();
+  final Autenticazione autenticazione = Autenticazione();
   final _formKey = GlobalKey<FormState>();
   String email, nome, password;
 
@@ -118,8 +118,18 @@ class MyCustomFormState extends State<MyCustomForm> {
                                     child: SizedBox(
                                       width: double.infinity,
                                       child: RaisedButton(
-                                        onPressed: () {
+                                        onPressed: () async {
                                           print("ButtonLogin clicked email=$email password=$password");
+                                          dynamic result = await autenticazione.autenticazione(email, password);
+                                          if(result == null) {
+                                            print("Accesso non riuscito");
+                                          } else {
+                                            print("Accesso riuscito");
+                                            print(result);
+                                            Route route = MaterialPageRoute(builder: (context) => HomePageOrganizzazione());
+                                            Navigator.push(context, route);
+                                          }
+                                          /*
                                           if(email=="1") {
                                             Route route = MaterialPageRoute(builder: (context) => MenuDipendente());
                                             Navigator.push(context, route);
@@ -128,6 +138,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                                             Route route = MaterialPageRoute(builder: (context) => HomePageOrganizzazione());
                                             Navigator.push(context, route);
                                           }
+                                           */
                                         },
                                         color: Color(0x00000000),
                                         elevation: 50,

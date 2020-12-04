@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'Service/AddOrganizzazione.dart';
+import 'Service/Autenticazione.dart';
+import 'package:smartqueue/Model/User.dart' as Usr;
 
 class RegistraOrganizzazione extends StatelessWidget {
   @override
@@ -27,8 +29,9 @@ class MyCustomForm extends StatefulWidget {
 }
 
 class MyCustomFormState extends State<MyCustomForm> {
-  final GlobalKey<FormFieldState<String>> _passwordFieldKey =
-  GlobalKey<FormFieldState<String>>();
+  final GlobalKey<FormFieldState<String>> _passwordFieldKey = GlobalKey<FormFieldState<String>>();
+
+  final Autenticazione autenticazione = Autenticazione();
 
   final _formKey = GlobalKey<FormState>();
   String email,nomeOr, nomeT,cognomeT, password;
@@ -178,9 +181,18 @@ class MyCustomFormState extends State<MyCustomForm> {
                                     child: SizedBox(
                                       width: double.infinity,
                                       child: RaisedButton(
-                                        onPressed: () {
+                                        onPressed: () async {
                                           print("Registrazione Nome Organizzazione=$nomeOr Nome titolare=$nomeT Cognome Titolare=$cognomeT email=$email password=$password");
-                                          AddOrganizzazione().addOrganizzazione(nomeOr);
+                                          Usr.User  result = await autenticazione.registrazione(email, password);
+                                          if(result == null) {
+                                            print("Registrazione non riuscita");
+                                          } else {
+                                            print("Registrazione effettuata con successo");
+                                            print(result);
+                                            AddOrganizzazione().addOrganizzazione(result.uid ,nomeOr, nomeT, cognomeT);
+                                          }
+
+
                                         },
                                         color: Color(0x00000000),
                                         elevation: 50,
