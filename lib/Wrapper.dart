@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:smartqueue/HomePageOrganizzazione.dart';
+import 'package:smartqueue/LoginRegistrazioneRiusciti.dart';
 import 'package:smartqueue/Login_Registrazione.dart';
 import 'package:smartqueue/MenuDipendente.dart';
 import 'package:smartqueue/Model/User.dart' as Usr;
@@ -11,11 +12,10 @@ bool a;
 
 class Wrapper extends StatelessWidget {
 
+
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<Usr.User>(context);
-
-
     if (user == null) {
       return Login_Registrazione();
     }
@@ -26,25 +26,28 @@ class Wrapper extends StatelessWidget {
             Future<QuerySnapshot> stream2 = GetInformazioniUtenti()
                 .get_dipendenti(element.id);
             stream2.then((value) =>
-                value.docs.forEach((element) async {
+                value.docs.forEach((element) {
                   if (element.id == user.uid) {
                     if (element.get("titolare") == true) {
-                      a = await true;
-                    }
-                    else {
-                      a = await false;
+                      a = true;
+                    } else {
+                      a = false;
                     }
                   }
                 }));
           }));
+
       if(a == true) {
         return HomePageOrganizzazione();
-      } else {
+      } else if (a == false){
         return MenuDipendente();
+      } else {
+        return LoginRegistrazioneRiusciti();
+        }
+
       }
     }
 
 
 
   }
-}

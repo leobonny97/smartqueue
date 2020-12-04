@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:smartqueue/HomePageOrganizzazione.dart';
+import 'package:smartqueue/Wrapper.dart';
 import 'Service/AddOrganizzazione.dart';
 import 'Service/Autenticazione.dart';
 import 'package:smartqueue/Model/User.dart' as Usr;
@@ -190,6 +192,8 @@ class MyCustomFormState extends State<MyCustomForm> {
                                             print("Registrazione effettuata con successo");
                                             print(result);
                                             AddOrganizzazione().addOrganizzazione(result.uid ,nomeOr, nomeT, cognomeT);
+                                            Route route = MaterialPageRoute(builder: (context) => Wrapper());
+                                            Navigator.push(context, route);
                                           }
 
 

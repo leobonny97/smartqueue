@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smartqueue/Wrapper.dart';
 import 'MenuDipendente.dart';
 import 'RegistrazioneOrganizzazione.dart';
 import 'HomePageOrganizzazione.dart';
@@ -126,7 +127,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                                           } else {
                                             print("Accesso riuscito");
                                             print(result);
-                                            Route route = MaterialPageRoute(builder: (context) => HomePageOrganizzazione());
+                                            Route route = MaterialPageRoute(builder: (context) => Wrapper());
                                             Navigator.push(context, route);
                                           }
                                           /*
