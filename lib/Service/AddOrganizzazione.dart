@@ -34,16 +34,16 @@ class AddOrganizzazione {
 
 
   //seconda versione
-  Future<void> addOrganizzazione(String nome_organizzazione, String nome_titolare, String cognome_titolare) {
+  Future<void> addOrganizzazione(String uid, String nome_organizzazione, String nome_titolare, String cognome_titolare) {
     organizzazioni.add({
       'nome' : nome_organizzazione
     })
         .then((value) => {
-          print("Organizzazione aggiunta con successo"),
-      organizzazioni
-          .doc(value.id)
+      print("Organizzazione aggiunta con successo"),
+      organizzazioni.doc(value.id)
           .collection("dipendenti")
-          .add({
+          .doc('$uid')
+          .set({
         'nome' : nome_titolare,
         'cognome' : cognome_titolare
       })

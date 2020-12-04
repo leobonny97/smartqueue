@@ -35,5 +35,21 @@ class Autenticazione {
     }
   }
 
+  Future registrazione(String email, String password) async {
+    try {
+      UserCredential userCredential = await auth.createUserWithEmailAndPassword(
+          email: email, password: password);
+      User user = userCredential.user;
+      return userFromFirebase(user);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        print('Nessun utente registrato con questa email.');
+        return null;
+      } else if (e.code == 'wrong-password') {
+        print('La password è errata.');
+        return null;
+      }
+    }
+  }
 
 }
