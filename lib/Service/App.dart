@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+/*import 'package:flutter/material.dart';
 // Import the firebase_core plugin
 import 'package:firebase_core/firebase_core.dart';
 
@@ -52,3 +52,4 @@ class _AppState extends State<App> {
     return MyAwesomeApp();
   }
 }
+*/

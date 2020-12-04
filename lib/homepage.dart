@@ -1,7 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:smartqueue/Service/Autenticazione.dart';
+import 'package:smartqueue/Wrapper.dart';
 import 'package:smartqueue/benvenuto_Cliente.dart';
 import 'Login_Registrazione.dart';
+import 'package:smartqueue/Model/User.dart' as Usr;
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,11 +19,14 @@ class homepage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: _title,
-      home: Scaffold(
-        appBar: AppBar(title: const Text(_title)),
-        body: MyStatelessWidget(),
+    return StreamProvider<Usr.User>.value(
+      value: Autenticazione().user,
+      child: MaterialApp(
+        title: _title,
+        home: Scaffold(
+          appBar: AppBar(title: const Text(_title)),
+          body: MyStatelessWidget(),
+        ),
       ),
     );
   }
@@ -64,7 +71,7 @@ class MyStatelessWidget extends StatelessWidget {
                           child: RaisedButton(
                             onPressed: () {
                               print("Gestore o dipendente");
-                              Route route = MaterialPageRoute(builder: (context) => Login_Registrazione());
+                              Route route = MaterialPageRoute(builder: (context) => Wrapper());
                               Navigator.push(context, route);
                             },
                             color: Color(0x00000000),

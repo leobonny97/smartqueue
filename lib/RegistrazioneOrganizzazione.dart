@@ -180,7 +180,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                                       child: RaisedButton(
                                         onPressed: () {
                                           print("Registrazione Nome Organizzazione=$nomeOr Nome titolare=$nomeT Cognome Titolare=$cognomeT email=$email password=$password");
-                                          AddOrganizzazione().addOrganizzazione(nomeOr);
+                                          AddOrganizzazione().addOrganizzazione(nomeOr, nomeT, cognomeT);
                                         },
                                         color: Color(0x00000000),
                                         elevation: 50,
