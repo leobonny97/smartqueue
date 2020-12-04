@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AddOrganizzazione {
-  CollectionReference organizzazioni = Firestore.instance.collection("organizzazioni");
+  CollectionReference organizzazioni = FirebaseFirestore.instance.collection("organizzazioni");
 
   //prima versione
   Future<void> addOrganizzazione1(String nome_organizzazione, String nome_titolare, String cognome_titolare)  {
@@ -23,7 +23,8 @@ class AddOrganizzazione {
                 .collection("dipendenti")
                 .add({
               'nome' : nome_titolare,
-              'cognome' : cognome_titolare
+              'cognome' : cognome_titolare,
+              'titolare' : true
             })
             .then((value) => print("Proprietario aggiunto con successo"))
             .catchError((error) => print("Non è stato possibile aggiungere il proprietario: $error"))
@@ -45,7 +46,8 @@ class AddOrganizzazione {
           .doc('$uid')
           .set({
         'nome' : nome_titolare,
-        'cognome' : cognome_titolare
+        'cognome' : cognome_titolare,
+        'titolare' : true
       })
           .then((value) => print("Proprietario dell'organizzazione aggiunto con successo"))
           .catchError((error) => print("Non è stato possibile aggiungere il proprietario: $error"))
