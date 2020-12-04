@@ -1,11 +1,16 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'membri.dart';
 import 'GeneraAccountMembro.dart';
 import 'QRCode.dart';
 import 'gestioneCoda.dart';
+import 'package:smartqueue/Service/PassaNumero.dart';
 
-void main() => runApp(HomePageOrganizzazione());
-
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(HomePageOrganizzazione());
+}
 class HomePageOrganizzazione extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -138,7 +143,8 @@ class MyCustomFormState extends State<MyCustomForm> {
                                       child: RaisedButton(
                                         onPressed: () {
                                           print("ButtonMostraQRcode clicked ");
-                                          Route route = MaterialPageRoute(builder: (context) => QRCode());
+                                          int numero1 = PassaNumero().passaNumero();
+                                          Route route = MaterialPageRoute(builder: (context) => QRCode(numero1));
                                           Navigator.push(context, route);
                                         },
                                         color: Color(0x00000000),

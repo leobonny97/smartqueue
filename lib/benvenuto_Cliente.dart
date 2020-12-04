@@ -1,9 +1,8 @@
 import 'dart:async';
 import 'package:qrscan/qrscan.dart' as scanner;
 import 'package:flutter/material.dart';
-
-
-
+import 'package:smartqueue/Service/AddBiglietto.dart';
+import 'package:smartqueue/coda.dart';
 
 class benvenuto_Cliente extends StatelessWidget {
   @override
@@ -118,7 +117,19 @@ class _Splash2State extends State<Splash2> {
 
   Future _scan() async {
     String barcode = await scanner.scan();
-    //dobbiamo passare il barcode a qualcuno
+
+    if (barcode == null) {
+      print('nothing return.');
+    } else {
+      print('Il barcode è    '+barcode);
+
+      RegExp exp = new RegExp(r"\s[0-9]+");
+      String matches = exp.stringMatch(barcode);
+      AddBiglietto().addBiglietto(int.parse(matches));
+
+      Route route = MaterialPageRoute(builder: (context) => coda(barcode));
+      Navigator.push(context, route);
+    }
   }
 
 }

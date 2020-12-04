@@ -1,21 +1,38 @@
 import 'dart:async';
 import 'dart:typed_data';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:qrscan/qrscan.dart' as scanner;
-
+import 'package:smartqueue/Service/PassaNumero.dart';
 
 class QRCode extends StatefulWidget {
+  int numero1;
+  QRCode(int numero1)
+  {
+    this.numero1=numero1;
+  }
+
+
   @override
-  _MyAppState createState() => _MyAppState();
+  _MyAppState createState() => _MyAppState(numero1);
 }
 
 class _MyAppState extends State<QRCode> {
+
+
   Uint8List bytes = Uint8List(0);
   static const String _title = 'SmartQueue';
 
+  int numero1;
+  _MyAppState(int numero1)
+  {
+    this.numero1=numero1;
+  }
+
   @override
   initState() {
+
     super.initState();
   }
 
@@ -93,7 +110,7 @@ class _MyAppState extends State<QRCode> {
                   SizedBox(
                     height: 190,
                     child: bytes.isEmpty
-                        ? _generateBarCode("0")
+                        ? _generateBarCode("Vm6V4KpiKERSaFsptdx2 "+numero1.toString())
                         : Image.memory(bytes),
                   ),
                 ],
