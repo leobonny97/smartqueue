@@ -1,10 +1,18 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:smartqueue/Service/AddDipendente.dart';
+import 'package:smartqueue/Service/GenerateRandomString.dart';
+import 'package:smartqueue/Service/GetInformazioniUtenti.dart';
+import 'package:smartqueue/Service/SendMail.dart';
+import 'package:smartqueue/Model/User.dart' as Usr;
+import 'package:smartqueue/Wrapper.dart';
 
 
 class GeneraAccountMembro extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final appTitle = 'SmarQueue';
+    final appTitle = 'SmartQueue';
 
     return MaterialApp(
       title: appTitle,
@@ -141,7 +149,30 @@ class MyCustomFormState extends State<MyCustomForm> {
                                     width: double.infinity,
                                     child: RaisedButton(
                                       onPressed: () {
+                                        print(user_uid);
                                         print("ButtonGeneraAccount clicked Nome membro=$nomeM Cognome membro=$cognomeM email=$email");
+                                        String password = GenerateRandomString().randomString(8);
+
+                                        Future<QuerySnapshot> stream = GetInformazioniUtenti().orgs;
+                                        stream.then((value) =>
+                                            value.docs.forEach((element) {
+                                              Future<QuerySnapshot> stream2 = GetInformazioniUtenti()
+                                                  .get_dipendenti(element.id);
+                                              stream2.then((value) =>
+                                                  value.docs.forEach((element2) async {
+                                                    if (element2.id == user_uid) {
+                                                      //facciamo qualcosa
+                                                      AddDipendente add_dipendente = new AddDipendente();
+                                                      Usr.User dipendente = await add_dipendente.registrazione_dipendente(email, password);
+                                                      add_dipendente.addDipendente(element.id, dipendente.uid, nomeM, cognomeM);
+                                                      if(SendMail().invioMail(email, password) == true) {
+                                                        print("Invio riuscito");
+                                                      } else {
+                                                        print("Invio non riuscito");
+                                                      }
+                                                    }
+                                                  }));
+                                            }));
                                       },
                                       color: Color(0x00000000),
                                       elevation: 50,

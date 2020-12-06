@@ -9,6 +9,7 @@ import 'package:smartqueue/Model/User.dart' as Usr;
 import 'package:smartqueue/Service/GetInformazioniUtenti.dart';
 
 bool a;
+String user_uid;
 
 class Wrapper extends StatelessWidget {
 
@@ -20,6 +21,7 @@ class Wrapper extends StatelessWidget {
       return Login_Registrazione();
     }
     else {
+      user_uid = user.uid;
       Future<QuerySnapshot> stream = GetInformazioniUtenti().orgs;
       stream.then((value) =>
           value.docs.forEach((element) {
