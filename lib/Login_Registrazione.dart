@@ -6,6 +6,8 @@ import 'HomePageOrganizzazione.dart';
 import 'package:smartqueue/Service/Autenticazione.dart';
 
 
+String email_titolare2, password_titolare2;
+
 class Login_Registrazione extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -37,7 +39,6 @@ class MyCustomFormState extends State<MyCustomForm> {
   final GlobalKey<FormFieldState<String>> _passwordFieldKey = GlobalKey<FormFieldState<String>>();
   final Autenticazione autenticazione = Autenticazione();
   final _formKey = GlobalKey<FormState>();
-  String email, nome, password;
 
   @override
   Widget build(BuildContext context) {
@@ -93,7 +94,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                                       ),
                                       keyboardType: TextInputType.emailAddress,
                                       onChanged: (String value) {
-                                        this.email = value;
+                                        email_titolare2 = value;
                                       },
                                     ),
                                   ),
@@ -108,7 +109,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                                       labelText: 'Password ',
                                       onFieldSubmitted: (String value) {
                                         setState(() {
-                                          this.password = value;
+                                          password_titolare2 = value;
                                         });
                                       },
                                     ),
@@ -120,8 +121,8 @@ class MyCustomFormState extends State<MyCustomForm> {
                                       width: double.infinity,
                                       child: RaisedButton(
                                         onPressed: () async {
-                                          print("ButtonLogin clicked email=$email password=$password");
-                                          dynamic result = await autenticazione.autenticazione(email, password);
+                                          print("ButtonLogin clicked email=$email_titolare2 password=$password_titolare2");
+                                          dynamic result = await autenticazione.autenticazione(email_titolare2, password_titolare2);
                                           if(result == null) {
                                             print("Accesso non riuscito");
                                           } else {
@@ -130,16 +131,6 @@ class MyCustomFormState extends State<MyCustomForm> {
                                             Route route = MaterialPageRoute(builder: (context) => Wrapper());
                                             Navigator.push(context, route);
                                           }
-                                          /*
-                                          if(email=="1") {
-                                            Route route = MaterialPageRoute(builder: (context) => MenuDipendente());
-                                            Navigator.push(context, route);
-                                          }
-                                          else {
-                                            Route route = MaterialPageRoute(builder: (context) => HomePageOrganizzazione());
-                                            Navigator.push(context, route);
-                                          }
-                                           */
                                         },
                                         color: Color(0x00000000),
                                         elevation: 50,

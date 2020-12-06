@@ -5,6 +5,8 @@ import 'Service/AddOrganizzazione.dart';
 import 'Service/Autenticazione.dart';
 import 'package:smartqueue/Model/User.dart' as Usr;
 
+String email_titolare, password_titolare;
+
 class RegistraOrganizzazione extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -36,7 +38,7 @@ class MyCustomFormState extends State<MyCustomForm> {
   final Autenticazione autenticazione = Autenticazione();
 
   final _formKey = GlobalKey<FormState>();
-  String email,nomeOr, nomeT,cognomeT, password;
+  String nomeOr, nomeT,cognomeT;
 
   String _validateName(String value) {
     if (value.isEmpty) return 'Name is required.';
@@ -157,7 +159,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                                       ),
                                       keyboardType: TextInputType.emailAddress,
                                       onChanged: (String value) {
-                                        this.email = value;
+                                        email_titolare = value;
                                       },
                                     ),
                                   ),
@@ -172,7 +174,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                                       labelText: 'Password ',
                                       onFieldSubmitted: (String value) {
                                         setState(() {
-                                          this.password = value;
+                                          password_titolare = value;
                                         });
                                       },
                                     ),
@@ -184,8 +186,8 @@ class MyCustomFormState extends State<MyCustomForm> {
                                       width: double.infinity,
                                       child: RaisedButton(
                                         onPressed: () async {
-                                          print("Registrazione Nome Organizzazione=$nomeOr Nome titolare=$nomeT Cognome Titolare=$cognomeT email=$email password=$password");
-                                          Usr.User  result = await autenticazione.registrazione(email, password);
+                                          print("Registrazione Nome Organizzazione=$nomeOr Nome titolare=$nomeT Cognome Titolare=$cognomeT email=$email_titolare password=$password_titolare");
+                                          Usr.User  result = await autenticazione.registrazione(email_titolare, password_titolare);
                                           if(result == null) {
                                             print("Registrazione non riuscita");
                                           } else {

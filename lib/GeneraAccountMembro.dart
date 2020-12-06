@@ -1,6 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:smartqueue/Login_Registrazione.dart';
+import 'package:smartqueue/RegistrazioneOrganizzazione.dart';
 import 'package:smartqueue/Service/AddDipendente.dart';
 import 'package:smartqueue/Service/GenerateRandomString.dart';
 import 'package:smartqueue/Service/GetInformazioniUtenti.dart';
@@ -8,6 +11,7 @@ import 'package:smartqueue/Service/SendMail.dart';
 import 'package:smartqueue/Model/User.dart' as Usr;
 import 'package:smartqueue/Wrapper.dart';
 
+bool aggiunta_dipendente;
 
 class GeneraAccountMembro extends StatelessWidget {
   @override
@@ -152,7 +156,6 @@ class MyCustomFormState extends State<MyCustomForm> {
                                         print(user_uid);
                                         print("ButtonGeneraAccount clicked Nome membro=$nomeM Cognome membro=$cognomeM email=$email");
                                         String password = GenerateRandomString().randomString(8);
-
                                         Future<QuerySnapshot> stream = GetInformazioniUtenti().orgs;
                                         stream.then((value) =>
                                             value.docs.forEach((element) {
@@ -161,10 +164,15 @@ class MyCustomFormState extends State<MyCustomForm> {
                                               stream2.then((value) =>
                                                   value.docs.forEach((element2) async {
                                                     if (element2.id == user_uid) {
-                                                      //facciamo qualcosa
                                                       AddDipendente add_dipendente = new AddDipendente();
                                                       Usr.User dipendente = await add_dipendente.registrazione_dipendente(email, password);
                                                       add_dipendente.addDipendente(element.id, dipendente.uid, nomeM, cognomeM);
+                                                      if(email_titolare != null) {
+                                                        await FirebaseAuth.instance.signInWithEmailAndPassword(email: email_titolare, password: password_titolare);
+                                                      } else {
+                                                        await FirebaseAuth.instance.signInWithEmailAndPassword(email: email_titolare2, password: password_titolare2);
+                                                      }
+                                                      aggiunta_dipendente = true;
                                                       if(SendMail().invioMail(email, password) == true) {
                                                         print("Invio riuscito");
                                                       } else {

@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:smartqueue/AggiuntaDipendenteRiuscita.dart';
+import 'package:smartqueue/GeneraAccountMembro.dart';
 import 'package:smartqueue/HomePageOrganizzazione.dart';
 import 'package:smartqueue/LoginRegistrazioneRiusciti.dart';
 import 'package:smartqueue/Login_Registrazione.dart';
@@ -38,6 +40,11 @@ class Wrapper extends StatelessWidget {
                   }
                 }));
           }));
+
+      if(aggiunta_dipendente == true) {
+        aggiunta_dipendente = false;
+        return AggiuntaDipendenteRiuscita();
+      }
 
       if(a == true) {
         return HomePageOrganizzazione();
