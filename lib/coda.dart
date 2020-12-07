@@ -1,16 +1,39 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'Service/App.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-void main() => runApp(MyApp());
+
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+
     return MaterialApp(
       title: 'SmartQueue',
       home: Scaffold(
-        body:Center(
-            child:Coda(number: 2,)
-        ),
+          body: StreamBuilder(
+            //recuperare il numero in coda da un organizzazione
+            stream: FirebaseFirestore.instance
+                .collection('organizzazioni').doc('zOavHmvgeGNM0IiVbtY0').collection("Coda")
+                .doc('1').snapshots(),
+            builder: (context,snapshot){
+              if(!snapshot.hasData) {
+                return const Text('Loading...');
+              }
+              DocumentSnapshot coda = snapshot.data;
+              int number=coda.data()['numero'];
+              return Center(
+                // ignore: missing_return
+                child: Coda(number: number),
+              );
+            },
+          )
       ),
     );
   }
@@ -54,7 +77,7 @@ class _CodaState extends State<Coda>{
             left: 100,
             child: Center(
               child: new Text(
-                      'Il tuo numero è',textAlign: TextAlign.start,
+                'Il tuo numero è',textAlign: TextAlign.start,
                 style: TextStyle(fontSize: 22.0, color: Colors.white,fontWeight: FontWeight.bold,),
               ),
             ),
@@ -70,9 +93,9 @@ class _CodaState extends State<Coda>{
             left: 5,
             right: 5,
             top: 550,
-              child: Card(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
+            child: Card(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   const ListTile(
                     leading: Icon(Icons.timelapse,size: 72.0),
@@ -84,17 +107,17 @@ class _CodaState extends State<Coda>{
                     children: <Widget>[
                       TextButton(
                         child: const Text('Abbandona la coda',
-                           style: TextStyle(color: Colors.red,
-                           ),
+                          style: TextStyle(color: Colors.red,
                           ),
-                          onPressed: () {/* ... */},
+                        ),
+                        onPressed: () {/* ... */},
                       ),
                     ],
                   ),
                 ],
-                ),
               ),
             ),
+          ),
         ],
       ),
     );
@@ -112,26 +135,27 @@ class CircleButton extends StatelessWidget {
 
     return new InkResponse(
       child: new Container(
-          width: size,
-          height: size,
-          decoration: new BoxDecoration(
-            color: Colors.white,
-            shape: BoxShape.circle,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.5),
-                spreadRadius: 5,
-                blurRadius: 7,
-                offset: Offset(0, 3), // changes position of shadow
-              ),
-            ],
-          ),
-          child: Center(
-            child: new Text(
-              number.toString(), textScaleFactor: 4.0,
+        width: size,
+        height: size,
+        decoration: new BoxDecoration(
+          color: Colors.white,
+          shape: BoxShape.circle,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.5),
+              spreadRadius: 5,
+              blurRadius: 7,
+              offset: Offset(0, 3), // changes position of shadow
             ),
+          ],
+        ),
+        child: Center(
+          child: new Text(
+            number.toString(), textScaleFactor: 4.0,
           ),
+        ),
       ),
     );
   }
 }
+
