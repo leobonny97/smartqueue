@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:smartqueue/QR.dart';
 import 'homepage.dart';
+import 'Service/GetInformazioniUtenti.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+
 
 void main() => runApp(MyApp());
 
@@ -60,24 +64,42 @@ class MyStatelessWidget extends StatelessWidget {
     );
   }
 }
+
+
 Widget getList() {
-  //l'array deve essere dato in input a getList
-  print(id_organizzazione);
-  final members = [
-    'Benedetto Sommese',
-    'Daniele Cesarano',
-    'Francesco Auriemma',
-  ];
-  ListView myList = new ListView.builder(
-      itemCount: members.length,
-      itemBuilder: (context, index) {
-        return new Card(
-          child: ListTile(
-            leading: const Icon(Icons.delete, size: 25.0, color: Colors.red,),
-            title: Text(members[index], style: TextStyle(fontWeight: FontWeight.bold,fontSize: 22.0,),),
-            subtitle: Text("Ruolo: Dipendente"),
-          ),
-        );
-      });
-  return myList;
+    CollectionReference collectionReference = FirebaseFirestore.instance.collection("organizzazioni").doc(id_organizzazione).collection("dipendenti");
+    return StreamBuilder<QuerySnapshot>(
+      stream: collectionReference.snapshots(),
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (snapshot.hasError) {
+          return Text('Impossibile recuperare i dipendenti');
+        }
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Text("Loading");
+        }
+        return new ListView(
+          children: snapshot.data.docs.map((DocumentSnapshot document) {
+            if(document.data()['titolare'] == true) {
+              return new Card(
+                  child : ListTile(
+                    title: new Text(document.data()['nome'] + " " + document.data()['cognome'], style: TextStyle(fontWeight: FontWeight.bold,fontSize: 22.0,),),
+                    subtitle: new Text("titolare"),
+                  )
+              );
+            } else {
+              return new Card(
+                  child : ListTile(
+                    trailing: const Icon(Icons.delete, size: 25.0, color: Colors.red,),
+                    title: new Text(document.data()['nome'] + " " + document.data()['cognome'], style: TextStyle(fontWeight: FontWeight.bold,fontSize: 22.0,),),
+                    subtitle: new Text("dipendente"),
+                  )
+              );
+            }
+          }).toList(),
+    );
+  });
+
+
 }
+
+
