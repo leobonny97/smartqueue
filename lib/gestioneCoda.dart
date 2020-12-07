@@ -1,38 +1,41 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'dart:core';
+import 'dart:io';
 
 
-class GestioneCoda extends StatelessWidget {
-  static const String _title = 'SmartQueue';
+class Counter extends StatefulWidget {
+  _CounterState createState() => _CounterState();
+}
 
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-        title: 'SmartQueue',
-        home: Scaffold(
-          appBar: AppBar(title: const Text(_title)),
-          body:Stack(
-              children: <Widget>[
-                Center(
-                    child:_GestioneCoda(number: 0,),
-                ),
-            ],
-          ),
-        ),
-       );
+class _CounterState extends State<Counter> {
+  int val;
+
+
+  void initState() {
+    super.initState();
+    val = 0;
   }
-}
 
-class _GestioneCoda extends StatefulWidget {
-  int number=0;
-  _GestioneCoda({Key key,this.number}):super(key:key);
-  @override
-  State<StatefulWidget>createState() => _GestioneCodaState(number);
-}
+  void change() {
+    final firestoreInstance = FirebaseFirestore.instance;
+    int length = 0;
+    List<int>arr_number = new List<int>();
 
-class _GestioneCodaState extends State<_GestioneCoda>{
-   int number=0;
-  _GestioneCodaState(int number){
-    this.number=number;
+    firestoreInstance.collection('organizzazioni').doc('zOavHmvgeGNM0IiVbtY0')
+        .collection("Coda").get()
+        .then((querySnapshot) {
+      length = querySnapshot.docs.length;
+      querySnapshot.docs.forEach((result) {
+        arr_number.add(result.data()['numero']);
+      });
+      //print(arr_number.length);
+      setState(() {
+        val=arr_number[0];
+      });
+    });
+
   }
 
   @override
@@ -65,7 +68,7 @@ class _GestioneCodaState extends State<_GestioneCoda>{
             left: 50,
             right: 50,
             top: 100,
-            child: new CircleButton(number:number,),
+            child: new CircleButton(number:val,),
           ),
           Positioned(
             left: 50,
@@ -76,9 +79,7 @@ class _GestioneCodaState extends State<_GestioneCoda>{
               color: Colors.transparent,
               onPressed: () {
                 // Respond to button press
-                setState(() {
-                  number++;
-                });
+                change();
               },
               child: Text(
                 "Prossimo",
@@ -95,6 +96,7 @@ class _GestioneCodaState extends State<_GestioneCoda>{
     );
   }
 }
+
 
 class CircleButton extends StatelessWidget {
 
@@ -130,4 +132,25 @@ class CircleButton extends StatelessWidget {
       ),
     );
   }
+}
+
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Center(
+        child: Container(
+          child: Counter(),
+        ),
+      ),
+    );
+  }
+}
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(MyApp());
 }
