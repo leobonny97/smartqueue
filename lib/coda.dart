@@ -4,9 +4,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 
-final databaseReference = Firestore.instance;
-var number=0;
-
+final firestoreInstance = FirebaseFirestore.instance;
+String num;
+String id_organizzazione;
+String id_coda;
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -22,8 +23,9 @@ class MyApp_coda extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
   List<String> split=barcode.split(" ");
-  String num = split[1];
-  String id_organizzazione = split[0];
+  id_organizzazione = split[0];
+  num = split[1];
+  id_coda = split[3];
     return MaterialApp(
       title: 'SmartQueue',
       home: Scaffold(
@@ -126,7 +128,9 @@ class _CodaState extends State<Coda>{
                           style: TextStyle(color: Colors.red,
                           ),
                         ),
-                        onPressed: () {/* ... */},
+                        onPressed: () {
+                            leaveCoda(id_organizzazione,id_coda);
+                          },
                       ),
                     ],
                   ),
@@ -175,3 +179,8 @@ class CircleButton extends StatelessWidget {
   }
 }
 
+void leaveCoda(String id_organizzazione,String num){
+  firestoreInstance.collection("organizzazioni").doc(id_organizzazione).collection("Coda").doc(num).delete().then((_) {
+    print("success!");
+  });
+}
