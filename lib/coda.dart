@@ -1,54 +1,48 @@
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/material.dart';
 import 'Service/App.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
 
+
+final databaseReference = Firestore.instance;
+var number=0;
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(MyApp());
+  runApp(MyApp_coda());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp_coda extends StatelessWidget {
+
+  String barcode;
+  MyApp_coda({Key key, @required this.barcode}):super(key: key);
+
+  //final String id_organizzazione;
   @override
   Widget build(BuildContext context) {
-
+  List<String> split=barcode.split(" ");
+  String num = split[1];
     return MaterialApp(
       title: 'SmartQueue',
       home: Scaffold(
-          body: StreamBuilder(
-            //recuperare il numero in coda da un organizzazione
-            stream: FirebaseFirestore.instance
-                .collection('organizzazioni').doc('zOavHmvgeGNM0IiVbtY0').collection("Coda")
-                .doc('1').snapshots(),
-            builder: (context,snapshot){
-              if(!snapshot.hasData) {
-                return const Text('Loading...');
-              }
-              DocumentSnapshot coda = snapshot.data;
-              int number=coda.data()['numero'];
-              return Center(
-                // ignore: missing_return
-                child: Coda(number: number),
-              );
-            },
-          )
-      ),
-    );
+        body: Center(
+          child: Coda(number: num,),),
+        ),
+      );
   }
 }
 
 class Coda extends StatefulWidget {
-  int number=0;
+  String number="0";
   Coda({Key key,this.number}):super(key:key);
   @override
   State<StatefulWidget>createState() => _CodaState(number);
 }
 
 class _CodaState extends State<Coda>{
-  int number=0;
-  _CodaState(int number){
+  String number="0";
+  _CodaState(String number){
     this.number=number;
   }
 
@@ -90,6 +84,27 @@ class _CodaState extends State<Coda>{
           ),
           //card remaining time and current number
           Positioned(
+              left: 100,
+              right: 100,
+              top: 450,
+              child:  RaisedButton(
+                color: Color(0x00000000),
+                elevation: 50,
+                child: Text(
+                  "Mostra QR code",
+                  style: TextStyle(
+                      fontSize: 22,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold
+                  ),
+                ),
+                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+                shape: StadiumBorder(
+                  side: BorderSide(color: Colors.white, width: 1),
+                ),
+              )
+          ),
+          Positioned(
             left: 5,
             right: 5,
             top: 550,
@@ -126,7 +141,7 @@ class _CodaState extends State<Coda>{
 
 class CircleButton extends StatelessWidget {
 
-  final int number;
+  final String number;
   const CircleButton({Key key, this.number}) : super(key: key);
 
   @override
