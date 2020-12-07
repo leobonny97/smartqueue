@@ -1,4 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:smartqueue/homepage.dart';
+
+
 
 class AddOrganizzazione {
   CollectionReference organizzazioni = FirebaseFirestore.instance.collection("organizzazioni");
@@ -40,6 +43,7 @@ class AddOrganizzazione {
       'nome' : nome_organizzazione
     })
         .then((value) => {
+      id_organizzazione = value.id,
       print("Organizzazione aggiunta con successo"),
       organizzazioni.doc(value.id)
           .collection("dipendenti")

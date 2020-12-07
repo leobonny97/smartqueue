@@ -9,6 +9,7 @@ import 'package:smartqueue/Login_Registrazione.dart';
 import 'package:smartqueue/MenuDipendente.dart';
 import 'package:smartqueue/Model/User.dart' as Usr;
 import 'package:smartqueue/Service/GetInformazioniUtenti.dart';
+import 'homepage.dart';
 
 bool a;
 String user_uid;
@@ -26,12 +27,13 @@ class Wrapper extends StatelessWidget {
       user_uid = user.uid;
       Future<QuerySnapshot> stream = GetInformazioniUtenti().orgs;
       stream.then((value) =>
-          value.docs.forEach((element) {
+          value.docs.forEach((element2) {
             Future<QuerySnapshot> stream2 = GetInformazioniUtenti()
-                .get_dipendenti(element.id);
+                .get_dipendenti(element2.id);
             stream2.then((value) =>
                 value.docs.forEach((element) {
                   if (element.id == user.uid) {
+                    id_organizzazione = element2.id;
                     if (element.get("titolare") == true) {
                       a = true;
                     } else {

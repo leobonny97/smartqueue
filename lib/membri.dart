@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smartqueue/QR.dart';
+import 'homepage.dart';
 
 void main() => runApp(MyApp());
 
@@ -61,13 +62,11 @@ class MyStatelessWidget extends StatelessWidget {
 }
 Widget getList() {
   //l'array deve essere dato in input a getList
+  print(id_organizzazione);
   final members = [
     'Benedetto Sommese',
     'Daniele Cesarano',
     'Francesco Auriemma',
-  ];
-  final icons = [
-    Icons.delete
   ];
   ListView myList = new ListView.builder(
       itemCount: members.length,

@@ -7,6 +7,8 @@ import 'package:smartqueue/benvenuto_Cliente.dart';
 import 'Login_Registrazione.dart';
 import 'package:smartqueue/Model/User.dart' as Usr;
 
+String id_organizzazione;
+
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
