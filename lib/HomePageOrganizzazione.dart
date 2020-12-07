@@ -144,7 +144,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                                         onPressed: () {
                                           print("ButtonMostraQRcode clicked ");
                                           int numero1 = PassaNumero().passaNumero();
-                                          Route route = MaterialPageRoute(builder: (context) => QRCode(numero1));
+                                          Route route = MaterialPageRoute(builder: (context) => QRCode(numero));
                                           Navigator.push(context, route);
                                         },
                                         color: Color(0x00000000),
@@ -172,7 +172,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                                       child: RaisedButton(
                                         onPressed: () {
                                           print("ButtonGestisciCoda clicked ");
-                                          Route route = MaterialPageRoute(builder: (context) => GestioneCoda("Vm6V4KpiKERSaFsptdx2"));
+                                          Route route = MaterialPageRoute(builder: (context) => MyApp_gestioneCoda( id_organizzazione: "Vm6V4KpiKERSaFsptdx2",));
                                           Navigator.push(context, route);
                                         },
                                         color: Color(0x00000000),
