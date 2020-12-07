@@ -135,7 +135,9 @@ class CircleButton extends StatelessWidget {
 }
 
 
-class MyApp extends StatelessWidget {
+class MyApp_gestioneCoda extends StatelessWidget {
+  final String id_organizzazione;
+  MyApp_gestioneCoda({Key key, @required this.id_organizzazione}):super(key: key);
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -152,5 +154,5 @@ class MyApp extends StatelessWidget {
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(MyApp());
+  runApp(MyApp_gestioneCoda());
 }
