@@ -127,8 +127,10 @@ class _Splash2State extends State<Splash2> {
       String matches = exp.stringMatch(barcode);
       AddBiglietto().addBiglietto(int.parse(matches));
 
-      Route route = MaterialPageRoute(builder: (context) => coda(barcode));
+      Route route = MaterialPageRoute(builder: (context) => MyApp_coda(barcode: barcode,));
       Navigator.push(context, route);
+
+
     }
   }
 
