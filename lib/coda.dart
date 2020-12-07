@@ -23,6 +23,7 @@ class MyApp_coda extends StatelessWidget {
   Widget build(BuildContext context) {
   List<String> split=barcode.split(" ");
   String num = split[1];
+  String id_organizzazione = split[0];
     return MaterialApp(
       title: 'SmartQueue',
       home: Scaffold(
