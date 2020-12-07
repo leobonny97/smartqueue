@@ -2,16 +2,19 @@ import 'Service/App.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:smartqueue/Service/numeroServito.dart';
 
 
 final firestoreInstance = FirebaseFirestore.instance;
-String num;
 String id_organizzazione;
 String id_coda;
+String num;
+var num_servito;
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  //numeroServito();
+  num_servito=await numeroServito().getNumeroServito();
+  print(num_servito);
   runApp(MyApp_coda());
 }
 
@@ -45,6 +48,7 @@ class Coda extends StatefulWidget {
 }
 
 class _CodaState extends State<Coda>{
+
   String number="0";
   _CodaState(String number){
     this.number=number;
@@ -116,11 +120,12 @@ class _CodaState extends State<Coda>{
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  const ListTile(
-                    leading: Icon(Icons.timelapse,size: 72.0),
-                    title: Text('Stiamo servendo il numero: 1'),
-                    subtitle: Text('Tempo di attesa stimato: 5 minuti'),
-                  ),
+
+                  Icon(Icons.timelapse,size: 72.0),
+                  Text("Stiamo servendo il numero:"+num_servito.toString()),
+                  Text("Tempo di attesa stimato:"),
+
+
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: <Widget>[
