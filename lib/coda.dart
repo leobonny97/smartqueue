@@ -11,6 +11,7 @@ String id_coda;
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  //numeroServito();
   runApp(MyApp_coda());
 }
 
@@ -25,7 +26,7 @@ class MyApp_coda extends StatelessWidget {
   List<String> split=barcode.split(" ");
   id_organizzazione = split[0];
   num = split[1];
-  id_coda = split[3];
+  //id_coda = split[2];
     return MaterialApp(
       title: 'SmartQueue',
       home: Scaffold(
@@ -129,7 +130,7 @@ class _CodaState extends State<Coda>{
                           ),
                         ),
                         onPressed: () {
-                            leaveCoda(id_organizzazione,id_coda);
+                            leaveCoda(id_organizzazione,"ffjascsdkd"); //id_coda
                           },
                       ),
                     ],
@@ -184,3 +185,15 @@ void leaveCoda(String id_organizzazione,String num){
     print("success!");
   });
 }
+/*
+void numeroServito()
+{
+  firestoreInstance.collection("organizzazioni").doc("Vm6V4KpiKERSaFsptdx2").collection("Coda").get()
+      .then((querySnapshot) {
+      querySnapshot.docs.forEach((result) {
+        print("Servito: "+result.data()['numero']);
+    });
+  });
+
+}
+ */
