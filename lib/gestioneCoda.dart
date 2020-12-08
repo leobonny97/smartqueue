@@ -1,102 +1,137 @@
+
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'dart:core';
-import 'dart:io';
+import 'package:provider/provider.dart';
+import 'package:smartqueue/Service/gestioneCodaService.dart';
 
 
-class Counter extends StatefulWidget {
-  _CounterState createState() => _CounterState();
+final firestoreInstance = FirebaseFirestore.instance;
+int prossimo;
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  prossimo= await gestioneCodaService().prossimo_da_servire();
+  print(prossimo);
+  firestoreInstance.collection("organizzazioni").doc('Vm6V4KpiKERSaFsptdx2').collection("Coda").snapshots().listen((event) {
+    event.docChanges.forEach((element)  async {
+      if(element.type == DocumentChangeType.modified){
+
+        prossimo= await gestioneCodaService().prossimo_da_servire();
+        print(prossimo);
+        //Route route = MaterialPageRoute(builder: (context) => MyApp());
+        //Navigator.push(context, route);
+        runApp(MyApp());
+      }
+    });
+  });
+  runApp(MyApp());
 }
 
-class _CounterState extends State<Counter> {
-  int val;
-
-
-  void initState() {
-    super.initState();
-    val = 0;
-  }
-
-  void change() {
-    final firestoreInstance = FirebaseFirestore.instance;
-    int length = 0;
-    List<int>arr_number = new List<int>();
-
-    firestoreInstance.collection('organizzazioni').doc('zOavHmvgeGNM0IiVbtY0')
-        .collection("Coda").get()
-        .then((querySnapshot) {
-      length = querySnapshot.docs.length;
-      querySnapshot.docs.forEach((result) {
-        arr_number.add(result.data()['numero']);
-      });
-      //print(arr_number.length);
-      setState(() {
-        val=arr_number[0];
-      });
-    });
-
-  }
-
+class MyApp extends StatelessWidget {
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: <Widget>[
-          Container(
-            decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [
-                      Color.fromARGB(255, 36, 63, 254),
-                      Color.fromARGB(255, 193, 121, 197),
-                      Color.fromARGB(255, 255, 144, 35)
-                    ]
-                )
-            ),
-          ),
-          Positioned(
-            left: 90,
-            right: 0,
-            top: 65,
-            child: Text("Il cliente servito è",
-              style: TextStyle(fontSize: 25.0, color: Colors.white,fontWeight: FontWeight.bold,),
-            ),
-          ),
-          Positioned(
-            left: 50,
-            right: 50,
-            top: 100,
-            child: new CircleButton(number:val,),
-          ),
-          Positioned(
-            left: 50,
-            right: 50,
-            top: 400,
-            child: FlatButton(
-              textColor: Colors.black,
-              color: Colors.transparent,
-              onPressed: () {
-                // Respond to button press
-                change();
-              },
-              child: Text(
-                "Prossimo",
-                style: TextStyle(fontSize: 25.0, color: Colors.white,fontWeight: FontWeight.bold,),
-              ),
-              padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40),
-              shape: StadiumBorder(
-                side: BorderSide(color: Colors.white, width: 2,),
-              ),
-            ),
-          ),
-        ],
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
+      home: MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
 
+class MyHomePage extends StatefulWidget {
+  MyHomePage({Key key, this.title}) : super(key: key);
+
+  final String title;
+
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  int _counter = 0;
+
+  void change() {
+    setState(() {
+      _counter++;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<QuerySnapshot>(
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot)  {
+          return Scaffold(
+              appBar: AppBar(
+                title: Text(widget.title),
+              ),
+              body: Stack(
+                children: <Widget>[
+                  Container(
+                    decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: [
+                              Color.fromARGB(255, 36, 63, 254),
+                              Color.fromARGB(255, 193, 121, 197),
+                              Color.fromARGB(255, 255, 144, 35)
+                            ]
+                        )
+                    ),
+                  ),
+                  Positioned(
+                    left: 120,
+                    right: 120,
+                    top: 65,
+                    child: Text("Il prossimo è:",
+                      style: TextStyle(fontSize: 25.0,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,),
+                    ),
+                  ),
+
+                  Positioned(
+                    left: 50,
+                    right: 50,
+                    top: 100,
+                    child: new CircleButton(number: prossimo,),
+                  ),
+
+                  Positioned(
+                    left: 50,
+                    right: 50,
+                    top: 400,
+                    child: FlatButton(
+                      textColor: Colors.black,
+                      color: Colors.transparent,
+                      onPressed: () {
+                        // Respond to button press
+                        change();
+                      },
+                      child: Text(
+                        "Acquisisci numero",
+                        style: TextStyle(fontSize: 25.0, color: Colors.white,fontWeight: FontWeight.bold,),
+                      ),
+                      padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40),
+                      shape: StadiumBorder(
+                        side: BorderSide(color: Colors.white, width: 2,),
+                      ),
+                    ),
+                  ),
+                ],
+              )
+          );
+        }
+    );
+  }
+}
 
 class CircleButton extends StatelessWidget {
 
@@ -132,27 +167,4 @@ class CircleButton extends StatelessWidget {
       ),
     );
   }
-}
-
-
-class MyApp_gestioneCoda extends StatelessWidget {
-  final String id_organizzazione;
-  MyApp_gestioneCoda({Key key, @required this.id_organizzazione}):super(key: key);
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Center(
-        child: Container(
-          child: Counter(),
-        ),
-      ),
-    );
-  }
-}
-
-Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  runApp(MyApp_gestioneCoda());
 }
