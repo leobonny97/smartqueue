@@ -11,30 +11,23 @@ class numeroServito{
   Firestore.instance.collection('organizzazioni').doc('Vm6V4KpiKERSaFsptdx2').collection("Coda");
 
   Future<int> getNumeroServito() async{
-    bool servito=false;
-    bool stoServendo=false;
+    int max;
     QuerySnapshot snapshot = await coda.get();
-    snapshot.docs.forEach((element) {
-      if(element.data()['servito']=="servito"){
-        numero_servito=element.data()['numero'];
-        servito=true;
+    for(int i=0;i<snapshot.size;i++)
+    {
+      if(snapshot.docs[i].data()['servito']=="sto servendo"){
+        max=snapshot.docs[i].data()['numero'];
+        break;
       }
-    });
-    snapshot.docs.forEach((element) {
-      if(element.data()['servito']=="sto servendo"){
-        numero_stoServendo=element.data()['numero'];
-        stoServendo=true;
-      }
-    });
-
-    if(servito==true){
-      if(stoServendo==true){
-        return numero_stoServendo;
-      }else{
-        return numero_servito;
-      }
-    }else{
-      return 0;
     }
+    for(int j=0;j<snapshot.size;j++){
+      if(snapshot.docs[j].data()['servito']=="sto servendo"){
+        if(snapshot.docs[j].data()['numero']>max){
+          max=snapshot.docs[j].data()['numero'];
+        }
+      }
+    }
+    return max;
   }
+
 }
