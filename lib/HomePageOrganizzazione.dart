@@ -147,14 +147,9 @@ class MyCustomFormState extends State<MyCustomForm> {
                                       child: RaisedButton(
                                         onPressed: () {
                                           print("ButtonMostraQRcode clicked ");
-                                          int numero1 = PassaNumero().passaNumero(idOrganizzazione);
-                                          String idO = PassaIdOrganizzazione().passaIdOrganizzazione(user_uid);
 
-                                          if(numero1==null || idO==null || user_uid==null )
-                                            {
-                                              PassaNumero().passaNumero(idOrganizzazione);
-                                              PassaIdOrganizzazione().passaIdOrganizzazione(user_uid);
-                                            }
+                                          String idO = PassaIdOrganizzazione().passaIdOrganizzazione(user_uid);
+                                          int numero1 = PassaNumero().passaNumero(idOrganizzazione);
 
                                           print("sono in Homepageorganizzazione   numero= "+numero1.toString()+" idO= "+idO);
 

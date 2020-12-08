@@ -15,7 +15,7 @@ class PassaNumero {
     {
       if(value.docs.isEmpty)
       {
-        numero = 0,
+        print("è vuotooooooooooo "),
       }
       else
       {
