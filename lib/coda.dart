@@ -7,14 +7,29 @@ import 'package:smartqueue/Service/numeroServito.dart';
 
 final firestoreInstance = FirebaseFirestore.instance;
 String id_organizzazione;
-String id_coda;
+String id_elemento_in_coda;
 String num;
 var num_servito;
+
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   num_servito=await numeroServito().getNumeroServito();
   print(num_servito);
+  firestoreInstance.collection("organizzazioni").doc('Vm6V4KpiKERSaFsptdx2').collection("Coda").snapshots().listen((event) {
+    event.docChanges.forEach((element)  async {
+      if(element.type == DocumentChangeType.modified){
+
+        num_servito= await numeroServito().getNumeroServito();
+        print(num_servito);
+        //Route route = MaterialPageRoute(builder: (context) => MyApp());
+        //Navigator.push(context, route);
+        runApp(MyApp_coda());
+      }
+    });
+  });
+
+
   runApp(MyApp_coda());
 }
 
@@ -29,7 +44,7 @@ class MyApp_coda extends StatelessWidget {
   List<String> split=barcode.split(" ");
   id_organizzazione = split[0];
   num = split[1];
-  //id_coda = split[2];
+  id_elemento_in_coda = split[2];
     return MaterialApp(
       title: 'SmartQueue',
       home: Scaffold(
@@ -135,7 +150,7 @@ class _CodaState extends State<Coda>{
                           ),
                         ),
                         onPressed: () {
-                            leaveCoda(id_organizzazione,"ffjascsdkd"); //id_coda
+                            leaveCoda(id_organizzazione,id_elemento_in_coda); //id_coda
                           },
                       ),
                     ],
@@ -185,20 +200,9 @@ class CircleButton extends StatelessWidget {
   }
 }
 
-void leaveCoda(String id_organizzazione,String num){
-  firestoreInstance.collection("organizzazioni").doc(id_organizzazione).collection("Coda").doc(num).delete().then((_) {
+void leaveCoda(String id_organizzazione,String id_elemento_in_coda){
+  firestoreInstance.collection("organizzazioni").doc(id_organizzazione).collection("Coda").doc(id_elemento_in_coda).delete().then((_) {
     print("success!");
   });
 }
-/*
-void numeroServito()
-{
-  firestoreInstance.collection("organizzazioni").doc("Vm6V4KpiKERSaFsptdx2").collection("Coda").get()
-      .then((querySnapshot) {
-      querySnapshot.docs.forEach((result) {
-        print("Servito: "+result.data()['numero']);
-    });
-  });
 
-}
- */
