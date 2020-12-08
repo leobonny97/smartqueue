@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:smartqueue/Wrapper.dart';
 import 'QRCode.dart';
 import 'gestioneCoda.dart';
 import 'package:smartqueue/Service/PassaNumero.dart';
+import 'package:smartqueue/Service/PassaIdOrganizzazione.dart';
 
 /// This is the main application widget.
 class MenuDipendente extends StatelessWidget {
@@ -58,8 +60,17 @@ class MyStatelessWidget extends StatelessWidget {
                           child: RaisedButton(
                             onPressed: () {
                               print("Mostra QR-Code");
-                              int numero1 = PassaNumero().passaNumero();
-                              Route route = MaterialPageRoute(builder: (context) => QRCode(numero1));
+                              int numero1 = PassaNumero().passaNumero(idOrganizzazione);
+                              String idO= PassaIdOrganizzazione().passaIdOrganizzazione(user_uid);
+                              if(numero1==null || idO==null || user_uid==null)
+                              {
+                                PassaNumero().passaNumero(idOrganizzazione);
+                                PassaIdOrganizzazione().passaIdOrganizzazione(user_uid);
+                              }
+
+                              print("numero= "+numero1.toString()+" idO= "+idO+" useruid= "+user_uid);
+
+                              Route route = MaterialPageRoute(builder: (context) => QRCode());
                               Navigator.push(context, route);
                             },
                             color: Color(0x00000000),

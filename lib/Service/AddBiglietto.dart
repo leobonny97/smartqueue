@@ -1,21 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AddBiglietto {
-  CollectionReference coda = FirebaseFirestore.instance
-      .collection("organizzazioni")
-      .doc("Vm6V4KpiKERSaFsptdx2")
-      .collection("Coda");
+  CollectionReference organizzazione = FirebaseFirestore.instance
+      .collection("organizzazioni");
 
-  Future<void> addBiglietto(int numbigl) {
+  Future<void> addBiglietto(int numbigl,String idO) {
 
-     return coda
+
+    print("Sono in addbiglietto num= "+numbigl.toString()+" ido= "+idO.toString());
+     return organizzazione.doc(idO).collection("coda")
          .add({
        'numero': numbigl,
-       'servito' : false,
+       'servito' : "non servito",
      })
          .then((value) => print("Biglietto aggiunto con successo"))
          .catchError((error) => print("Non è stato possibile aggiungere il biglietto: $error"));
-
-
   }
 }

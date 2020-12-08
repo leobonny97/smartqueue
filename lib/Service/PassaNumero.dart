@@ -3,23 +3,40 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 int numero;
 
 class PassaNumero {
-  CollectionReference coda = FirebaseFirestore.instance
-      .collection("organizzazioni")
-      .doc("Vm6V4KpiKERSaFsptdx2")
-      .collection("Coda");
+  CollectionReference organizzazione = FirebaseFirestore.instance
+      .collection("organizzazioni");
 
-  int passaNumero() {
+  int passaNumero(String idO) {
 
-    int indice;
+    bool prima_volta=true;
 
-    coda.get().
+    organizzazione.doc(idO).collection("coda").get().
     then((value) =>
     {
-      indice = value.docs.length,
-      indice = indice + 1,
-      numero = indice ,
-
+      if(value.docs.isEmpty)
+      {
+        numero = 0,
+      }
+      else
+      {
+        value.docs.forEach((element) {
+          if(prima_volta==true)
+          {
+            prima_volta=false;
+            numero = element.data()["numero"];
+          }
+          else
+          {
+            if(element.data()["numero"] > numero)
+            {
+              numero = element.data()["numero"];
+            }
+          }
+        }),
+      }
     });
+
+    numero = numero + 1;
 
     return numero;
   }

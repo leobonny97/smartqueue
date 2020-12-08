@@ -2,6 +2,10 @@ import 'dart:async';
 import 'package:qrscan/qrscan.dart' as scanner;
 import 'package:flutter/material.dart';
 import 'package:smartqueue/Service/AddBiglietto.dart';
+import 'package:smartqueue/Service/PassaIdCoda.dart';
+import 'package:smartqueue/Service/PassaIdOrganizzazione.dart';
+import 'package:smartqueue/Service/PassaNumero.dart';
+import 'package:smartqueue/Wrapper.dart';
 import 'package:smartqueue/coda.dart';
 
 class benvenuto_Cliente extends StatelessWidget {
@@ -123,14 +127,15 @@ class _Splash2State extends State<Splash2> {
     } else {
       print('Il barcode è    '+barcode);
 
-      RegExp exp = new RegExp(r"\s[0-9]+");
-      String matches = exp.stringMatch(barcode);
-      AddBiglietto().addBiglietto(int.parse(matches));
+      List<String> split=barcode.split(" ");
+      String idO = split[0];
+      String numero1 = split[1];
+
+      AddBiglietto().addBiglietto(int.parse(numero1),idO);
+      String idC = PassaIdCoda().passaIdCoda(int.parse(numero1), idO);
 
       Route route = MaterialPageRoute(builder: (context) => MyApp_coda(barcode: barcode,));
       Navigator.push(context, route);
-
-
     }
   }
 
