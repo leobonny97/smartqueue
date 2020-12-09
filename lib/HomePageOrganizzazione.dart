@@ -1,13 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:smartqueue/Service/PassaIdCoda.dart';
-import 'package:smartqueue/Service/PassaIdOrganizzazione.dart';
-import 'package:smartqueue/Wrapper.dart';
 import 'membri.dart';
 import 'GeneraAccountMembro.dart';
 import 'QRCode.dart';
 import 'gestioneCoda.dart';
-import 'package:smartqueue/Service/PassaNumero.dart';
 import 'package:qrscan/qrscan.dart' as scanner;
 
 void main() async{
@@ -145,14 +141,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                                     child: SizedBox(
                                       width: double.infinity,
                                       child: RaisedButton(
-                                        onPressed: () {
-                                          print("ButtonMostraQRcode clicked ");
-
-                                          String idO = PassaIdOrganizzazione().passaIdOrganizzazione(user_uid);
-                                          int numero1 = PassaNumero().passaNumero(idOrganizzazione);
-
-                                          print("sono in Homepageorganizzazione   numero= "+numero1.toString()+" idO= "+idO);
-
+                                        onPressed: ()  {
                                           Route route = MaterialPageRoute(builder: (context) => QRCode());
                                           Navigator.push(context, route);
                                         },
@@ -181,7 +170,8 @@ class MyCustomFormState extends State<MyCustomForm> {
                                       child: RaisedButton(
                                         onPressed: () {
                                           print("ButtonGestisciCoda clicked ");
-                                          _scan();
+                                          Route route = MaterialPageRoute(builder: (context) => MyApp());
+                                          Navigator.push(context, route);
                                         },
                                         color: Color(0x00000000),
                                         elevation: 50,
@@ -212,21 +202,6 @@ class MyCustomFormState extends State<MyCustomForm> {
         )
     );
   }
-
-
-  Future _scan() async {
-    String barcode = await scanner.scan();
-
-    if (barcode == null) {
-      print('nothing return.');
-    } else {
-      print('Il barcode è    '+barcode);
-
-      Route route = MaterialPageRoute(builder: (context) => MyApp_gestioneCoda( id_organizzazione: idOrganizzazione,));
-      Navigator.push(context, route);
-    }
-  }
-
 
 }
 

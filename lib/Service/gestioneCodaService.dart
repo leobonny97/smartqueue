@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:smartqueue/coda.dart';
+import 'package:smartqueue/homepage.dart';
 int min;
 class gestioneCodaService {
   CollectionReference coda =
-  Firestore.instance.collection('organizzazioni').doc('Vm6V4KpiKERSaFsptdx2').collection("Coda");
+  FirebaseFirestore.instance.collection('organizzazioni').doc(id_organizzazione).collection("coda");
   
   
 

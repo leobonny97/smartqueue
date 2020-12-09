@@ -3,9 +3,6 @@ import 'package:qrscan/qrscan.dart' as scanner;
 import 'package:flutter/material.dart';
 import 'package:smartqueue/Service/AddBiglietto.dart';
 import 'package:smartqueue/Service/PassaIdCoda.dart';
-import 'package:smartqueue/Service/PassaIdOrganizzazione.dart';
-import 'package:smartqueue/Service/PassaNumero.dart';
-import 'package:smartqueue/Wrapper.dart';
 import 'package:smartqueue/coda.dart';
 
 class benvenuto_Cliente extends StatelessWidget {

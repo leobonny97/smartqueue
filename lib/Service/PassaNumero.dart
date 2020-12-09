@@ -10,6 +10,7 @@ class PassaNumero {
 
     bool prima_volta=true;
 
+    print("sono dentro passanumero idO="+idO.toString());
     organizzazione.doc(idO).collection("coda").get().
     then((value) =>
     {

@@ -5,11 +5,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:smartqueue/Service/gestioneCodaService.dart';
+import 'package:smartqueue/homepage.dart';
 
 
 final firestoreInstance = FirebaseFirestore.instance;
 int prossimo;
-String id_organizzazione;
 String num;
 String id_elemento_in_coda;
 
@@ -26,17 +26,17 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   String barcode;
   String id_coda;
-  MyApp({Key key, @required this.barcode, @required this.id_coda}):super(key: key);
+  //MyApp({Key key, @required this.barcode, @required this.id_coda}):super(key: key);
 
 
   Widget build(BuildContext context) {
 
-    List<String> split=barcode.split(" ");
-    id_organizzazione = split[0];
-    num = split[1];
-    id_elemento_in_coda = id_coda;
+    //List<String> split=barcode.split(" ");
+    //id_organizzazione = split[0];
+    //num = split[1];
+    //id_elemento_in_coda = id_coda;
 
-    firestoreInstance.collection("organizzazioni").doc('id_organizzazione').collection("Coda").snapshots().listen((event) {
+    firestoreInstance.collection("organizzazioni").doc(id_organizzazione).collection("coda").snapshots().listen((event) {
       event.docChanges.forEach((element)  async {
         if(element.type == DocumentChangeType.modified){
           prossimo= await gestioneCodaService().prossimo_da_servire();

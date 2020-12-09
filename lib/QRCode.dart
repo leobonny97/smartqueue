@@ -3,10 +3,8 @@ import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:qrscan/qrscan.dart' as scanner;
-import 'package:smartqueue/Service/PassaIdCoda.dart';
-import 'package:smartqueue/Service/PassaIdOrganizzazione.dart';
 import 'package:smartqueue/Service/PassaNumero.dart';
-import 'package:smartqueue/Wrapper.dart';
+import 'package:smartqueue/homepage.dart';
 
 class QRCode extends StatefulWidget {
 
@@ -70,6 +68,13 @@ class _MyAppState extends State<QRCode> {
 
 
   Widget _qrCodeWidget(Uint8List bytes, BuildContext context) {
+    print("ButtonMostraQRcode clicked ");
+
+
+    int numero1 =  PassaNumero().passaNumero(id_organizzazione);
+
+    print("sono in Homepageorganizzazione   numero= "+numero1.toString()+" idO= "+id_organizzazione);
+
     return Padding(
       padding: EdgeInsets.only(left: 40, right: 40, top: 100, bottom: 100),
       child: Card(
@@ -100,7 +105,7 @@ class _MyAppState extends State<QRCode> {
                   SizedBox(
                     height: 190,
                     child: bytes.isEmpty
-                        ? _generateBarCode(idOrganizzazione+" "+numero.toString())
+                        ? _generateBarCode(id_organizzazione+" "+numero.toString())
                         : Image.memory(bytes),
                   ),
                 ],
