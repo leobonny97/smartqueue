@@ -36,15 +36,16 @@ void main() async{
 class MyApp_coda extends StatelessWidget {
 
   String barcode;
-  MyApp_coda({Key key, @required this.barcode}):super(key: key);
+  String id_coda;
+  MyApp_coda({Key key, @required this.barcode, @required this.id_coda}):super(key: key);
 
   //final String id_organizzazione;
   @override
   Widget build(BuildContext context) {
   List<String> split=barcode.split(" ");
-  id_organizzazione = split[0];
-  num = split[1];
-  id_elemento_in_coda = split[2];
+  //id_organizzazione = split[0];
+  //num = split[1];
+  //id_elemento_in_coda = id_coda;
     return MaterialApp(
       title: 'SmartQueue',
       home: Scaffold(
