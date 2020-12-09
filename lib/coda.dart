@@ -16,19 +16,6 @@ void main() async{
   await Firebase.initializeApp();
   num_servito=await numeroServito().getNumeroServito();
   print(num_servito);
-  firestoreInstance.collection("organizzazioni").doc('Vm6V4KpiKERSaFsptdx2').collection("Coda").snapshots().listen((event) {
-    event.docChanges.forEach((element)  async {
-      if(element.type == DocumentChangeType.modified){
-
-        num_servito= await numeroServito().getNumeroServito();
-        print(num_servito);
-        //Route route = MaterialPageRoute(builder: (context) => MyApp());
-        //Navigator.push(context, route);
-        runApp(MyApp_coda());
-      }
-    });
-  });
-
 
   runApp(MyApp_coda());
 }
@@ -43,9 +30,23 @@ class MyApp_coda extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
   List<String> split=barcode.split(" ");
-  //id_organizzazione = split[0];
-  //num = split[1];
-  //id_elemento_in_coda = id_coda;
+  id_organizzazione = split[0];
+  num = split[1];
+  id_elemento_in_coda = id_coda;
+
+
+  firestoreInstance.collection("organizzazioni").doc(id_organizzazione).collection("Coda").snapshots().listen((event) {
+    event.docChanges.forEach((element)  async {
+      if(element.type == DocumentChangeType.modified){
+
+        num_servito= await numeroServito().getNumeroServito();
+        print(num_servito);
+        runApp(MyApp_coda());
+      }
+    });
+  });
+
+
     return MaterialApp(
       title: 'SmartQueue',
       home: Scaffold(
