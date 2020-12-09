@@ -20,9 +20,9 @@ String num;
 * }
 *
 * */
-Widget numero_attualmenteServito() {
+Widget numero_attualmenteServito(String id_org) {
   CollectionReference coda =
-  FirebaseFirestore.instance.collection('organizzazioni').doc(id_organizzazione).collection("coda");
+  FirebaseFirestore.instance.collection('organizzazioni').doc(id_org).collection("coda");
     int max;
     //QuerySnapshot snapshot = await coda.get();
 
@@ -52,7 +52,7 @@ Widget numero_attualmenteServito() {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Text("Loading");
         }
-        return Text(max.toString(),);
+        return Text(max.toString());
       });
 }
 
@@ -88,7 +88,7 @@ class MyApp_coda extends StatelessWidget {
       title: 'SmartQueue',
       home: Scaffold(
         body: Center(
-            child: Coda(number: num,),  //numero del cliente
+            child: Coda(number: num, id_org: id_organizzazione) //numero del cliente
           ),
         ),
       );
@@ -97,16 +97,19 @@ class MyApp_coda extends StatelessWidget {
 
 class Coda extends StatefulWidget {
   String number="0";
-  Coda({Key key,this.number}):super(key:key);
+  String id_org;
+  Coda({Key key, @required this.number, @required this.id_org}):super(key:key);
   @override
-  State<StatefulWidget>createState() => _CodaState(number);
+  State<StatefulWidget>createState() => _CodaState(number,id_org);
 }
 
 class _CodaState extends State<Coda>{
 
   String number="0";
-  _CodaState(String number){
+  String id_org;
+  _CodaState(String number,String id_org){
     this.number=number;
+    this.id_org=id_org;
   }
 
   @override
@@ -182,7 +185,7 @@ class _CodaState extends State<Coda>{
 
                   Icon(Icons.timelapse,size: 72.0),
                   Text("Stiamo servendo il numero:"),
-                  numero_attualmenteServito(),    //numero che si sta servendo
+                  numero_attualmenteServito(id_org),    //numero che si sta servendo
                   Text("Tempo di attesa stimato:"),
 
 
@@ -206,6 +209,7 @@ class _CodaState extends State<Coda>{
               ),
             ),
           ),
+
         ],
       ),
     );
