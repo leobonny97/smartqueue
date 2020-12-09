@@ -1,11 +1,10 @@
-
-
+import 'package:qrscan/qrscan.dart' as scanner;
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:smartqueue/Service/gestioneCodaService.dart';
 import 'package:smartqueue/homepage.dart';
+
+import 'Service/PassaIdCoda.dart';
 
 
 final firestoreInstance = FirebaseFirestore.instance;
@@ -112,9 +111,7 @@ class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
   void change() {
-    setState(() {
-      _counter++;
-    });
+   _scan();
   }
 
   @override
@@ -185,6 +182,26 @@ class _MyHomePageState extends State<MyHomePage> {
         }
     );
   }
+
+  Future _scan() async {
+    String barcode = await scanner.scan();
+
+    if (barcode == null) {
+      print('nothing return.');
+    } else {
+      print('Il barcode è    '+barcode);
+
+      List<String> split=barcode.split(" ");
+      String idO = split[0];
+      String numero1 = split[1];
+
+      String idC = PassaIdCoda().passaIdCoda(int.parse(numero1), idO);
+
+     // Route route = MaterialPageRoute(builder: (context) => MyApp_coda(barcode: barcode,id_coda: idC));
+    //  Navigator.push(context, route);
+    }
+  }
+
 }
 
 class CircleButton extends StatelessWidget {
