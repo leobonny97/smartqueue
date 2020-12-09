@@ -1,10 +1,7 @@
+import 'package:smartqueue/MostraQRCodeCliente.dart';
 import 'package:smartqueue/homepage.dart';
-
-import 'Service/App.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:smartqueue/Service/numeroServito.dart';
 
 
 final firestoreInstance = FirebaseFirestore.instance;
@@ -154,6 +151,10 @@ class _CodaState extends State<Coda>{
               right: 100,
               top: 450,
               child:  RaisedButton(
+                onPressed: ()  {
+                  Route route = MaterialPageRoute(builder: (context) => MostraQRCodeCliente());
+                  Navigator.push(context, route);
+                },
                 color: Color(0x00000000),
                 elevation: 50,
                 child: Text(

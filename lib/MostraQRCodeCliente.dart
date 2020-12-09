@@ -1,20 +1,17 @@
 import 'dart:async';
 import 'dart:typed_data';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:qrscan/qrscan.dart' as scanner;
-import 'package:smartqueue/homepage.dart';
+import 'package:smartqueue/coda.dart';
 
-int numero;
-
-class QRCode extends StatefulWidget {
+class MostraQRCodeCliente extends StatefulWidget {
 
   @override
   _MyAppState createState() => _MyAppState();
 }
 
-class _MyAppState extends State<QRCode> {
+class _MyAppState extends State<MostraQRCodeCliente> {
 
 
   Uint8List bytes = Uint8List(0);
@@ -98,7 +95,13 @@ class _MyAppState extends State<QRCode> {
                   left: 10, right: 10, top: 40, bottom: 40),
               child: Column(
                 children: <Widget>[
-                  getNumero(bytes),
+                SizedBox(
+                    height: 190,
+                    child: bytes.isEmpty
+                        ? _generateBarCode(id_organizzazione+" "+num)
+                        : Image.memory(bytes),
+
+                  ),
                 ],
               ),
             ),
@@ -112,60 +115,6 @@ class _MyAppState extends State<QRCode> {
   Future _generateBarCode(String inputCode) async {
     Uint8List result = await scanner.generateBarCode(inputCode);
     this.setState(() => this.bytes = result);
-  }
-
-
-  Widget getNumero(Uint8List bytes) {
-    CollectionReference collectionReference = FirebaseFirestore.instance.collection("organizzazioni").doc(id_organizzazione).collection("coda");
-    return StreamBuilder<QuerySnapshot>(
-        stream: collectionReference.snapshots(),
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (snapshot.hasError) {
-            return Text('Impossibile recuperare la coda');
-          }
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Text("Loading");
-          }
-
-          bool prima_volta=true;
-
-          snapshot.data.docs.forEach((element) {
-            if(prima_volta==true)
-            {
-              prima_volta=false;
-              numero = element.data()["numero"];
-            }
-            else
-            {
-              if(element.data()["numero"] > numero)
-              {
-                numero = element.data()["numero"];
-              }
-            }
-          });
-
-          numero = numero + 1;
-
-          /*
-          collectionReference.snapshots().listen((event) {
-            event.docChanges.forEach((element)  async {
-              if(element.type == DocumentChangeType.added){
-                await _generateBarCode(id_organizzazione+" "+numero.toString());
-              }
-            });
-          });*/
-
-
-          print(numero.toString());
-
-          return new SizedBox(
-            height: 190,
-            child: bytes.isEmpty
-                ? _generateBarCode(id_organizzazione+" "+numero.toString())
-                : Image.memory(bytes),
-
-          );
-        });
   }
 
 }

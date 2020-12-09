@@ -131,7 +131,7 @@ class _Splash2State extends State<Splash2> {
       AddBiglietto().addBiglietto(int.parse(numero1),idO);
       String idC = PassaIdCoda().passaIdCoda(int.parse(numero1), idO);
 
-      Route route = MaterialPageRoute(builder: (context) => MyApp_coda(barcode: barcode,));
+      Route route = MaterialPageRoute(builder: (context) => MyApp_coda(barcode: barcode,id_coda: idC));
       Navigator.push(context, route);
     }
   }
