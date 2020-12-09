@@ -9,24 +9,16 @@ import 'package:smartqueue/Service/gestioneCodaService.dart';
 
 final firestoreInstance = FirebaseFirestore.instance;
 int prossimo;
+String id_organizzazione;
+String num;
+String id_elemento_in_coda;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   prossimo= await gestioneCodaService().prossimo_da_servire();
   print(prossimo);
-  firestoreInstance.collection("organizzazioni").doc('Vm6V4KpiKERSaFsptdx2').collection("Coda").snapshots().listen((event) {
-    event.docChanges.forEach((element)  async {
-      if(element.type == DocumentChangeType.modified){
 
-        prossimo= await gestioneCodaService().prossimo_da_servire();
-        print(prossimo);
-        //Route route = MaterialPageRoute(builder: (context) => MyApp());
-        //Navigator.push(context, route);
-        runApp(MyApp());
-      }
-    });
-  });
   runApp(MyApp());
 }
 
@@ -35,8 +27,27 @@ class MyApp extends StatelessWidget {
   String barcode;
   String id_coda;
   MyApp({Key key, @required this.barcode, @required this.id_coda}):super(key: key);
-  @override
+
+
   Widget build(BuildContext context) {
+
+    List<String> split=barcode.split(" ");
+    id_organizzazione = split[0];
+    num = split[1];
+    id_elemento_in_coda = id_coda;
+
+    firestoreInstance.collection("organizzazioni").doc('id_organizzazione').collection("Coda").snapshots().listen((event) {
+      event.docChanges.forEach((element)  async {
+        if(element.type == DocumentChangeType.modified){
+          prossimo= await gestioneCodaService().prossimo_da_servire();
+          print(prossimo);
+          //Route route = MaterialPageRoute(builder: (context) => MyApp());
+          //Navigator.push(context, route);
+          runApp(MyApp());
+        }
+      });
+    });
+
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
