@@ -13,6 +13,7 @@ int prossimo;
 String num;
 String id_elemento_in_coda;
 
+/*
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -21,6 +22,45 @@ Future<void> main() async {
 
   runApp(MyApp());
 }
+*/
+
+
+Widget prossimonumero(){
+  CollectionReference coda =
+  FirebaseFirestore.instance.collection('organizzazioni').doc(id_organizzazione).collection("coda");
+  int min;
+  //QuerySnapshot snapshot = await coda.get();
+
+  return StreamBuilder<QuerySnapshot>(
+      stream: coda.snapshots(),
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if(snapshot.data == null) return Text("impossibile recuperare il numero");
+          for(int i=0;i<snapshot.data.docs.length;i++)
+          {
+            if(snapshot.data.docs[i].data()['servito']=="non servito"){
+              min=snapshot.data.docs[i].data()['numero'];
+              break;
+            }
+          }
+        for(int j=0;j<snapshot.data.docs.length;j++){
+          if(snapshot.data.docs[j].data()['servito']=="non servito"){
+            if(snapshot.data.docs[j].data()['numero']<min){
+              min=snapshot.data.docs[j].data()['numero'];
+            }
+          }
+        }
+
+
+        if (snapshot.hasError) {
+          return Text('Impossibile recuperare i dipendenti');
+        }
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Text("Loading");
+        }
+        return CircleButton(number: min,);
+      });
+}
+
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -115,7 +155,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     left: 50,
                     right: 50,
                     top: 100,
-                    child: new CircleButton(number: prossimo,),
+                    child: prossimonumero(),
                   ),
 
                   Positioned(
