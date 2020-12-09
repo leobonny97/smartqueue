@@ -1,3 +1,5 @@
+import 'package:smartqueue/homepage.dart';
+
 import 'Service/App.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -9,16 +11,54 @@ final firestoreInstance = FirebaseFirestore.instance;
 String id_organizzazione;
 String id_elemento_in_coda;
 String num;
-var num_servito;
 
-void main() async{
-  WidgetsFlutterBinding.ensureInitialized();
+/*
+* Future<void>main()async{
+* WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   num_servito=await numeroServito().getNumeroServito();
   print(num_servito);
 
   runApp(MyApp_coda());
+* }
+*
+* */
+Widget numero_attualmenteServito() {
+  CollectionReference coda =
+  FirebaseFirestore.instance.collection('organizzazioni').doc(id_organizzazione).collection("coda");
+    int max;
+    //QuerySnapshot snapshot = await coda.get();
+
+  return StreamBuilder<QuerySnapshot>(
+      stream: coda.snapshots(),
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if(snapshot.data == null) return Text("impossibile recuperare il numero");
+        for(int i=0;i<snapshot.data.docs.length;i++)
+        {
+          if(snapshot.data.docs[i].data()['servito']=="sto servendo"){
+            max=snapshot.data.docs[i].data()['numero'];
+            break;
+          }
+        }
+        for(int j=0;j<snapshot.data.docs.length;j++){
+          if(snapshot.data.docs[j].data()['servito']=="sto servendo"){
+            if(snapshot.data.docs[j].data()['numero']>max){
+              max=snapshot.data.docs[j].data()['numero'];
+            }
+          }
+        }
+
+
+        if (snapshot.hasError) {
+          return Text('Impossibile recuperare il tuo numero');
+        }
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Text("Loading");
+        }
+        return Text(max.toString(),);
+      });
 }
+
 
 class MyApp_coda extends StatelessWidget {
 
@@ -34,7 +74,7 @@ class MyApp_coda extends StatelessWidget {
   num = split[1];
   id_elemento_in_coda = id_coda;
 
-
+/*
   firestoreInstance.collection("organizzazioni").doc(id_organizzazione).collection("Coda").snapshots().listen((event) {
     event.docChanges.forEach((element)  async {
       if(element.type == DocumentChangeType.modified){
@@ -45,13 +85,14 @@ class MyApp_coda extends StatelessWidget {
       }
     });
   });
-
+*/
 
     return MaterialApp(
       title: 'SmartQueue',
       home: Scaffold(
         body: Center(
-          child: Coda(number: num,),),
+            child: Coda(number: num,),  //numero del cliente
+          ),
         ),
       );
   }
@@ -139,7 +180,8 @@ class _CodaState extends State<Coda>{
                 children: <Widget>[
 
                   Icon(Icons.timelapse,size: 72.0),
-                  Text("Stiamo servendo il numero:"+num_servito.toString()),
+                  Text("Stiamo servendo il numero:"),
+                  numero_attualmenteServito(),    //numero che si sta servendo
                   Text("Tempo di attesa stimato:"),
 
 
@@ -153,6 +195,8 @@ class _CodaState extends State<Coda>{
                         ),
                         onPressed: () {
                             leaveCoda(id_organizzazione,id_elemento_in_coda); //id_coda
+                            Route route = MaterialPageRoute(builder: (context) => homepage());
+                            Navigator.push(context, route);
                           },
                       ),
                     ],
