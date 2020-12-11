@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:smartqueue/Service/GetInformazioniUtenti.dart';
 
 String idCoda;
 
@@ -7,8 +6,6 @@ class PassaIdCoda {
   CollectionReference organizzazioni = FirebaseFirestore.instance.collection("organizzazioni");
 
   String passaIdCoda(int num, String idO) {
-
-    print("sono in passaidcoda "+num.toString()+"  "+idO);
 
     Future<QuerySnapshot> stream =  organizzazioni.doc(idO).collection("coda").get();
 
@@ -19,6 +16,8 @@ class PassaIdCoda {
                 }
 
         }));
+
+    print("sono in passaidcoda num= "+num.toString()+"  idO= "+idO.toString()+" idC= "+idCoda.toString());
 
     return idCoda;
 

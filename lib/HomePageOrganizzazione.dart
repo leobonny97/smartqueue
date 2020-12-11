@@ -170,7 +170,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                                       child: RaisedButton(
                                         onPressed: () {
                                           print("ButtonGestisciCoda clicked ");
-                                          Route route = MaterialPageRoute(builder: (context) => MyApp());
+                                          Route route = MaterialPageRoute(builder: (context) => MyApp_gestioneCoda());
                                           Navigator.push(context, route);
                                         },
                                         color: Color(0x00000000),

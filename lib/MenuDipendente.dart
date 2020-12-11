@@ -86,7 +86,7 @@ class MyStatelessWidget extends StatelessWidget {
                           child: RaisedButton(
                             onPressed: () {
                               print("Gestisci coda");
-                              Route route = MaterialPageRoute(builder: (context) => MyApp());
+                              Route route = MaterialPageRoute(builder: (context) => MyApp_gestioneCoda());
                               Navigator.push(context, route);
                             },
                             color: Color(0x00000000),

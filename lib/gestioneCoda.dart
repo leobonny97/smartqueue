@@ -1,11 +1,8 @@
 import 'package:qrscan/qrscan.dart' as scanner;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:smartqueue/Service/gestioneCodaService.dart';
-import 'package:smartqueue/Servire.dart';
+//import 'package:smartqueue/Servire.dart';
 import 'package:smartqueue/homepage.dart';
-
-import 'Service/PassaIdCoda.dart';
 
 
 final firestoreInstance = FirebaseFirestore.instance;
@@ -85,8 +82,8 @@ class _MyHomePageState extends State<MyHomePage> {
 Future<String> id_scannerizzato;
 
   void change() {
-   Future<String> numero=_scan();
-   print("GGGGGGGGGGGGGGGGGGGG"+numero.toString());
+   _scan();
+
 
    if("MM0yX0Lkq3UUiYs8CEyn"==id_prossimo){ //cambio lo stato
 
@@ -96,8 +93,8 @@ Future<String> id_scannerizzato;
          .collection("coda")
          .doc(id_prossimo)
          .update({"servito":"sto servendo"}).then((result) {
-         Route route = MaterialPageRoute(builder: (context) => MyApp_servire(id_prossimo: id_prossimo));
-         Navigator.push(context, route);
+        // Route route = MaterialPageRoute(builder: (context) => MyApp_servire(id_prossimo: id_prossimo));
+         //Navigator.push(context, route);
          print("OOOOOOOOOOOOOOOO"+id_prossimo);
      });
    }
@@ -173,7 +170,14 @@ Future<String> id_scannerizzato;
   }
 
   Future<String> _scan() async {
+    String barcode = await scanner.scan();
 
+    if (barcode == null) {
+      print('nothing return.');
+    } else {
+      print('Il barcode del cliente è    '+barcode);
+
+    }
   }
 
 }

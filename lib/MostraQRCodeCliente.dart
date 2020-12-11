@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:qrscan/qrscan.dart' as scanner;
+import 'package:smartqueue/Service/PassaIdCoda.dart';
 import 'package:smartqueue/coda.dart';
 
 class MostraQRCodeCliente extends StatefulWidget {
@@ -98,7 +99,7 @@ class _MyAppState extends State<MostraQRCodeCliente> {
                 SizedBox(
                     height: 190,
                     child: bytes.isEmpty
-                        ? _generateBarCode(id_organizzazione+" "+num)
+                        ? _generateBarCode(id_organizzazione+" "+num+" "+idCoda)
                         : Image.memory(bytes),
 
                   ),
