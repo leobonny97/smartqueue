@@ -9,17 +9,6 @@ String id_organizzazione;
 String id_elemento_in_coda;
 String num;
 
-/*
-* Future<void>main()async{
-* WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  num_servito=await numeroServito().getNumeroServito();
-  print(num_servito);
-
-  runApp(MyApp_coda());
-* }
-*
-* */
 Widget numero_attualmenteServito(String id_org) {
   CollectionReference coda =
   FirebaseFirestore.instance.collection('organizzazioni').doc(id_org).collection("coda");
@@ -70,19 +59,6 @@ class MyApp_coda extends StatelessWidget {
   id_organizzazione = split[0];
   num = split[1];
   id_elemento_in_coda = id_coda;
-
-/*
-  firestoreInstance.collection("organizzazioni").doc(id_organizzazione).collection("Coda").snapshots().listen((event) {
-    event.docChanges.forEach((element)  async {
-      if(element.type == DocumentChangeType.modified){
-
-        num_servito= await numeroServito().getNumeroServito();
-        print(num_servito);
-        runApp(MyApp_coda());
-      }
-    });
-  });
-*/
 
     return MaterialApp(
       title: 'SmartQueue',
@@ -186,7 +162,7 @@ class _CodaState extends State<Coda>{
                   Icon(Icons.timelapse,size: 72.0),
                   Text("Stiamo servendo il numero:"),
                   numero_attualmenteServito(id_org),    //numero che si sta servendo
-                  Text("Tempo di attesa stimato:"),
+                  Text("Tempo di attesa stimato: 5 minuti"),
 
 
                   Row(
