@@ -2,6 +2,7 @@ import 'package:qrscan/qrscan.dart' as scanner;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:smartqueue/Service/gestioneCodaService.dart';
+import 'package:smartqueue/Servire.dart';
 import 'package:smartqueue/homepage.dart';
 
 import 'Service/PassaIdCoda.dart';
@@ -9,25 +10,15 @@ import 'Service/PassaIdCoda.dart';
 
 final firestoreInstance = FirebaseFirestore.instance;
 int prossimo;
+String id_prossimo;
 String num;
 String id_elemento_in_coda;
-
-/*
-Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  prossimo= await gestioneCodaService().prossimo_da_servire();
-  print(prossimo);
-
-  runApp(MyApp());
-}
-*/
-
 
 Widget prossimonumero(){
   CollectionReference coda =
   FirebaseFirestore.instance.collection('organizzazioni').doc(id_organizzazione).collection("coda");
   int min;
+
   //QuerySnapshot snapshot = await coda.get();
 
   return StreamBuilder<QuerySnapshot>(
@@ -38,6 +29,7 @@ Widget prossimonumero(){
           {
             if(snapshot.data.docs[i].data()['servito']=="non servito"){
               min=snapshot.data.docs[i].data()['numero'];
+              id_prossimo=snapshot.data.docs[i].id;
               break;
             }
           }
@@ -45,6 +37,7 @@ Widget prossimonumero(){
           if(snapshot.data.docs[j].data()['servito']=="non servito"){
             if(snapshot.data.docs[j].data()['numero']<min){
               min=snapshot.data.docs[j].data()['numero'];
+              id_prossimo=snapshot.data.docs[j].id;
             }
           }
         }
@@ -61,31 +54,12 @@ Widget prossimonumero(){
 }
 
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
-  String barcode;
-  String id_coda;
-  //MyApp({Key key, @required this.barcode, @required this.id_coda}):super(key: key);
+class MyApp_gestioneCoda extends StatelessWidget {
+
+  MyApp_gestioneCoda({Key key}):super(key: key);
 
 
   Widget build(BuildContext context) {
-
-    //List<String> split=barcode.split(" ");
-    //id_organizzazione = split[0];
-    //num = split[1];
-    //id_elemento_in_coda = id_coda;
-
-    firestoreInstance.collection("organizzazioni").doc(id_organizzazione).collection("coda").snapshots().listen((event) {
-      event.docChanges.forEach((element)  async {
-        if(element.type == DocumentChangeType.modified){
-          prossimo= await gestioneCodaService().prossimo_da_servire();
-          print(prossimo);
-          //Route route = MaterialPageRoute(builder: (context) => MyApp());
-          //Navigator.push(context, route);
-          runApp(MyApp());
-        }
-      });
-    });
 
     return MaterialApp(
       title: 'Flutter Demo',
@@ -108,10 +82,25 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+Future<String> id_scannerizzato;
 
   void change() {
-   _scan();
+   Future<String> numero=_scan();
+   print("GGGGGGGGGGGGGGGGGGGG"+numero.toString());
+
+   if("MM0yX0Lkq3UUiYs8CEyn"==id_prossimo){ //cambio lo stato
+
+
+     FirebaseFirestore.instance.collection("organizzazioni")
+         .doc(id_organizzazione)
+         .collection("coda")
+         .doc(id_prossimo)
+         .update({"servito":"sto servendo"}).then((result) {
+         Route route = MaterialPageRoute(builder: (context) => MyApp_servire(id_prossimo: id_prossimo));
+         Navigator.push(context, route);
+         print("OOOOOOOOOOOOOOOO"+id_prossimo);
+     });
+   }
   }
 
   @override
@@ -183,23 +172,8 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Future _scan() async {
-    String barcode = await scanner.scan();
+  Future<String> _scan() async {
 
-    if (barcode == null) {
-      print('nothing return.');
-    } else {
-      print('Il barcode è    '+barcode);
-
-      List<String> split=barcode.split(" ");
-      String idO = split[0];
-      String numero1 = split[1];
-
-      String idC = PassaIdCoda().passaIdCoda(int.parse(numero1), idO);
-
-     // Route route = MaterialPageRoute(builder: (context) => MyApp_coda(barcode: barcode,id_coda: idC));
-    //  Navigator.push(context, route);
-    }
   }
 
 }
