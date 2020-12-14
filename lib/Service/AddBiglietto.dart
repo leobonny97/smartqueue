@@ -12,6 +12,7 @@ class AddBiglietto {
          .add({
        'numero': numbigl,
        'servito' : "non servito",
+       'stima' : "00:00:00",
      })
          .then((value) => print("Biglietto aggiunto con successo"))
          .catchError((error) => print("Non è stato possibile aggiungere il biglietto: $error"));

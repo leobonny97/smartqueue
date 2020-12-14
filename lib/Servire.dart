@@ -47,10 +47,25 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
 
+  var start = new DateTime.now();
+
+
+
   Future<void> change() async{
     await termina_cliente(id_elemento_in_coda);
-    Route route = MaterialPageRoute(builder: (context) =>MyApp_gestioneCoda());
-    Navigator.push(context, route);
+    var end = new DateTime.now();
+    Duration difference = end.difference(start);
+    String stima=_printDuration(difference);
+
+    FirebaseFirestore.instance.collection("organizzazioni")
+        .doc(id_organizzazione)
+        .collection("coda")
+        .doc(id_elemento_in_coda)
+        .update({"stima":stima}).then((result) {
+          Route route = MaterialPageRoute(builder: (context) =>MyApp_gestioneCoda());
+          Navigator.push(context, route);
+    });
+
   }
 
   @override
@@ -165,4 +180,12 @@ Future<void> termina_cliente(String id_elemento_servito) async {
 
   });
 }
+
+String _printDuration(Duration duration) {
+  String twoDigits(int n) => n.toString().padLeft(2, "0");
+  String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
+  String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
+  return "${twoDigits(duration.inHours)}:$twoDigitMinutes:$twoDigitSeconds";
+}
+
 

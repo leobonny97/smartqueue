@@ -91,8 +91,6 @@ String barcode_acquisito;
 
    if(id_elemento_in_coda==id_prossimo){ //cambio lo stato
 
-
-
      FirebaseFirestore.instance.collection("organizzazioni")
          .doc(id_organizzazione)
          .collection("coda")

@@ -12,8 +12,7 @@ String num;
 Widget numero_attualmenteServito(String id_org) {
   CollectionReference coda =
   FirebaseFirestore.instance.collection('organizzazioni').doc(id_org).collection("coda");
-    int max;
-    //QuerySnapshot snapshot = await coda.get();
+  int max;
 
   return StreamBuilder<QuerySnapshot>(
       stream: coda.snapshots(),
@@ -41,7 +40,46 @@ Widget numero_attualmenteServito(String id_org) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Text("Loading");
         }
-        return Text(max.toString());
+        return Text(max.toString()??'0');
+      });
+}
+
+Widget stima(String id_org) {
+  CollectionReference coda =
+  FirebaseFirestore.instance.collection('organizzazioni').doc(id_org).collection("coda");
+  int max;
+  String ultima_stima;
+  //QuerySnapshot snapshot = await coda.get();
+
+  return StreamBuilder<QuerySnapshot>(
+      stream: coda.snapshots(),
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if(snapshot.data == null) return Text("impossibile recuperare il numero");
+        for(int i=0;i<snapshot.data.docs.length;i++)
+        {
+          if(snapshot.data.docs[i].data()['servito']=="servito"){
+            max=snapshot.data.docs[i].data()['numero'];
+            ultima_stima=snapshot.data.docs[i].data()['stima'];
+            break;
+          }
+        }
+        for(int j=0;j<snapshot.data.docs.length;j++){
+          if(snapshot.data.docs[j].data()['servito']=="servito"){
+            if(snapshot.data.docs[j].data()['numero']>max){
+              max=snapshot.data.docs[j].data()['numero'];
+              ultima_stima=snapshot.data.docs[j].data()['stima'];
+            }
+          }
+        }
+
+
+        if (snapshot.hasError) {
+          return Text('Impossibile recuperare la stima');
+        }
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Text("Loading");
+        }
+        return Text(ultima_stima??'0');
       });
 }
 
@@ -162,8 +200,8 @@ class _CodaState extends State<Coda>{
                   Icon(Icons.timelapse,size: 72.0),
                   Text("Stiamo servendo il numero:"),
                   numero_attualmenteServito(id_org),    //numero che si sta servendo
-                  Text("Tempo di attesa stimato: 5 minuti"),
-
+                  Text("Tempo di attesa stimato: "),
+                  stima(id_org),                        //ultima stima
 
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
@@ -185,7 +223,6 @@ class _CodaState extends State<Coda>{
               ),
             ),
           ),
-
         ],
       ),
     );
