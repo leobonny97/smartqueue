@@ -1,15 +1,17 @@
 import 'package:qrscan/qrscan.dart' as scanner;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:smartqueue/Servire.dart';
 //import 'package:smartqueue/Servire.dart';
 import 'package:smartqueue/homepage.dart';
 
 
 final firestoreInstance = FirebaseFirestore.instance;
-int prossimo;
+
 String id_prossimo;
 String num;
 String id_elemento_in_coda;
+
 
 Widget prossimonumero(){
   CollectionReference coda =
@@ -79,13 +81,16 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-Future<String> id_scannerizzato;
+String barcode_acquisito;
+  Future<void> change() async {
+  barcode_acquisito= await _scan();
 
-  void change() {
-   _scan();
+  List<String> split=barcode_acquisito.split(" ");
+  num = split[1];
+  id_elemento_in_coda=split[2];
 
+   if(id_elemento_in_coda==id_prossimo){ //cambio lo stato
 
-   if("MM0yX0Lkq3UUiYs8CEyn"==id_prossimo){ //cambio lo stato
 
 
      FirebaseFirestore.instance.collection("organizzazioni")
@@ -93,11 +98,15 @@ Future<String> id_scannerizzato;
          .collection("coda")
          .doc(id_prossimo)
          .update({"servito":"sto servendo"}).then((result) {
-        // Route route = MaterialPageRoute(builder: (context) => MyApp_servire(id_prossimo: id_prossimo));
-         //Navigator.push(context, route);
-         print("OOOOOOOOOOOOOOOO"+id_prossimo);
+         Route route = MaterialPageRoute(builder: (context) =>MyApp_servire(id_prossimo: id_prossimo, num: num));
+         Navigator.push(context, route);
      });
+   }else{
+      //alert non è il numero da servire
+     await _showMyDialog();
+
    }
+
   }
 
   @override
@@ -176,9 +185,39 @@ Future<String> id_scannerizzato;
       print('nothing return.');
     } else {
       print('Il barcode del cliente è    '+barcode);
-
     }
+
+    return barcode;
   }
+
+
+Future<void> _showMyDialog() async {
+  return showDialog<void>(
+    context: context,
+    barrierDismissible: false, // user must tap button!
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('Attenzione'),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: <Widget>[
+              Text('Non è il numero da servire.'),
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: Text('Ok'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
+
 
 }
 
@@ -217,3 +256,4 @@ class CircleButton extends StatelessWidget {
     );
   }
 }
+
