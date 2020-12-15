@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:smartqueue/QR.dart';
 import 'homepage.dart';
@@ -89,7 +90,13 @@ Widget getList() {
             } else {
               return new Card(
                   child : ListTile(
-                    trailing: const Icon(Icons.delete, size: 25.0, color: Colors.red,),
+                    trailing: RaisedButton(
+                      child: const Icon(Icons.delete, size: 25.0, color: Colors.red,),
+                      onPressed: () {
+                        print("cliccato su elimina");
+                         FirebaseFirestore.instance.collection("organizzazioni").doc(id_organizzazione).collection("dipendenti").doc(document.id).delete();
+                      },
+                    ),
                     title: new Text(document.data()['nome'] + " " + document.data()['cognome'], style: TextStyle(fontWeight: FontWeight.bold,fontSize: 22.0,),),
                     subtitle: new Text("dipendente"),
                   )
