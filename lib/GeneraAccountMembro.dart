@@ -43,15 +43,6 @@ class MyCustomFormState extends State<MyCustomForm> {
   final _formKey = GlobalKey<FormState>();
   String email,nomeOr, nomeM,cognomeM;
 
-  String _validateName(String value) {
-    if (value.isEmpty) return 'Name is required.';
-    final RegExp nameExp = RegExp(r'^[A-Za-z ]+$');
-    if (!nameExp.hasMatch(value)) {
-      return 'Please enter only alphabetical characters.';
-    }
-    return null;
-  }
-
   @override
   Widget build(BuildContext context) {
 
@@ -101,7 +92,14 @@ class MyCustomFormState extends State<MyCustomForm> {
                                     onChanged: (String value) {
                                       this.nomeM = value;
                                     },
-                                    validator: _validateName,
+                                    validator: (nomeM){
+                                      if (nomeM.isEmpty) return 'Name is required.';
+                                      final RegExp nameExp = RegExp(r'^[A-Za-z ]+$');
+                                      if (!nameExp.hasMatch(nomeM)) {
+                                        return 'Please enter only alphabetical characters.';
+                                      }
+                                      return null;
+                                    },
                                   ),
                                 ),
                               ),
@@ -122,7 +120,14 @@ class MyCustomFormState extends State<MyCustomForm> {
                                     onChanged: (String value) {
                                       this.cognomeM = value;
                                     },
-                                    validator: _validateName,
+                                    validator: (cognomeM){
+                                      if (cognomeM.isEmpty) return 'Cognome is required.';
+                                      final RegExp nameExp = RegExp(r'^[A-Za-z ]+$');
+                                      if (!nameExp.hasMatch(cognomeM)) {
+                                        return 'Please enter only alphabetical characters.';
+                                      }
+                                      return null;
+                                    },
                                   ),
                                 ),
                               ),
@@ -143,6 +148,14 @@ class MyCustomFormState extends State<MyCustomForm> {
                                     onChanged: (String value) {
                                       this.email = value;
                                     },
+                                    validator: (email){
+                                      if (email.isEmpty) return 'Email is required.';
+                                      final RegExp nameExp = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+                                      if (!nameExp.hasMatch(email)) {
+                                        return 'Please enter a validate email .';
+                                      }
+                                      return null;
+                                    },
                                   ),
                                 ),
                               ),
@@ -153,34 +166,36 @@ class MyCustomFormState extends State<MyCustomForm> {
                                     width: double.infinity,
                                     child: RaisedButton(
                                       onPressed: () {
-                                        print(user_uid);
-                                        print("ButtonGeneraAccount clicked Nome membro=$nomeM Cognome membro=$cognomeM email=$email");
-                                        String password = GenerateRandomString().randomString(8);
-                                        Future<QuerySnapshot> stream = GetInformazioniUtenti().orgs;
-                                        stream.then((value) =>
-                                            value.docs.forEach((element) {
-                                              Future<QuerySnapshot> stream2 = GetInformazioniUtenti()
-                                                  .get_dipendenti(element.id);
-                                              stream2.then((value) =>
-                                                  value.docs.forEach((element2) async {
-                                                    if (element2.id == user_uid) {
-                                                      AddDipendente add_dipendente = new AddDipendente();
-                                                      Usr.User dipendente = await add_dipendente.registrazione_dipendente(email, password);
-                                                      add_dipendente.addDipendente(element.id, dipendente.uid, nomeM, cognomeM);
-                                                      if(email_titolare != null) {
-                                                        await FirebaseAuth.instance.signInWithEmailAndPassword(email: email_titolare, password: password_titolare);
-                                                      } else {
-                                                        await FirebaseAuth.instance.signInWithEmailAndPassword(email: email_titolare2, password: password_titolare2);
+                                        if (_formKey.currentState.validate()){
+                                          print(user_uid);
+                                          print("ButtonGeneraAccount clicked Nome membro=$nomeM Cognome membro=$cognomeM email=$email");
+                                          String password = GenerateRandomString().randomString(8);
+                                          Future<QuerySnapshot> stream = GetInformazioniUtenti().orgs;
+                                          stream.then((value) =>
+                                              value.docs.forEach((element) {
+                                                Future<QuerySnapshot> stream2 = GetInformazioniUtenti()
+                                                    .get_dipendenti(element.id);
+                                                stream2.then((value) =>
+                                                    value.docs.forEach((element2) async {
+                                                      if (element2.id == user_uid) {
+                                                        AddDipendente add_dipendente = new AddDipendente();
+                                                        Usr.User dipendente = await add_dipendente.registrazione_dipendente(email, password);
+                                                        add_dipendente.addDipendente(element.id, dipendente.uid, nomeM, cognomeM);
+                                                        if(email_titolare != null) {
+                                                          await FirebaseAuth.instance.signInWithEmailAndPassword(email: email_titolare, password: password_titolare);
+                                                        } else {
+                                                          await FirebaseAuth.instance.signInWithEmailAndPassword(email: email_titolare2, password: password_titolare2);
+                                                        }
+                                                        aggiunta_dipendente = true;
+                                                        if(SendMail().invioMail(email, password) == true) {
+                                                          print("Invio riuscito");
+                                                        } else {
+                                                          print("Invio non riuscito");
+                                                        }
                                                       }
-                                                      aggiunta_dipendente = true;
-                                                      if(SendMail().invioMail(email, password) == true) {
-                                                        print("Invio riuscito");
-                                                      } else {
-                                                        print("Invio non riuscito");
-                                                      }
-                                                    }
-                                                  }));
-                                            }));
+                                                    }));
+                                              }));
+                                        }
                                       },
                                       color: Color(0x00000000),
                                       elevation: 50,

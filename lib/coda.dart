@@ -265,7 +265,7 @@ class CircleButton extends StatelessWidget {
 }
 
 void leaveCoda(String id_organizzazione,String id_elemento_in_coda){
-  firestoreInstance.collection("organizzazioni").doc(id_organizzazione).collection("Coda").doc(id_elemento_in_coda).delete().then((_) {
+  firestoreInstance.collection("organizzazioni").doc(id_organizzazione).collection("coda").doc(id_elemento_in_coda).delete().then((_) {
     print("success!");
   });
 }

@@ -39,6 +39,7 @@ class MyCustomFormState extends State<MyCustomForm> {
   final GlobalKey<FormFieldState<String>> _passwordFieldKey = GlobalKey<FormFieldState<String>>();
   final Autenticazione autenticazione = Autenticazione();
   final _formKey = GlobalKey<FormState>();
+  String email_titolare3, password_titolare3;
 
   @override
   Widget build(BuildContext context) {
@@ -95,6 +96,15 @@ class MyCustomFormState extends State<MyCustomForm> {
                                       keyboardType: TextInputType.emailAddress,
                                       onChanged: (String value) {
                                         email_titolare2 = value;
+                                        email_titolare3 = email_titolare2;
+                                      },
+                                      validator: (email_titolare3){
+                                        if (email_titolare3.isEmpty) return 'Email is required.';
+                                        final RegExp nameExp = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+                                        if (!nameExp.hasMatch(email_titolare3)) {
+                                          return 'Please enter a validate email .';
+                                        }
+                                        return null;
                                       },
                                     ),
                                   ),
@@ -110,7 +120,19 @@ class MyCustomFormState extends State<MyCustomForm> {
                                       onFieldSubmitted: (String value) {
                                         setState(() {
                                           password_titolare2 = value;
+                                          password_titolare3 = password_titolare2;
                                         });
+                                      },
+                                      validator: (password_titolare3){
+                                        if (password_titolare3.isEmpty) return 'Password is required.';
+                                        final RegExp nameExp = RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$');
+                                        if(password_titolare3.length < 8){
+                                          return 'Please enter a Minimum 8 characters';
+                                        }
+                                        else if (!nameExp.hasMatch(password_titolare3)) {
+                                          return 'Please enter a Minimum 1 Upper case,\n1 lowercase,1 Numeric Number.';
+                                        }
+                                        return null;
                                       },
                                     ),
                                   ),
@@ -121,16 +143,18 @@ class MyCustomFormState extends State<MyCustomForm> {
                                       width: double.infinity,
                                       child: RaisedButton(
                                         onPressed: () async {
-                                          print("ButtonLogin clicked email=$email_titolare2 password=$password_titolare2");
-                                          dynamic result = await autenticazione.autenticazione(email_titolare2, password_titolare2);
-                                          if(result == null) {
-                                            print("Accesso non riuscito");
-                                          } else {
-                                            print("Accesso riuscito");
-                                            print(result);
+                                          if (_formKey.currentState.validate()){
+                                            print("ButtonLogin clicked email=$email_titolare2 password=$password_titolare2");
+                                            dynamic result = await autenticazione.autenticazione(email_titolare2, password_titolare2);
+                                            if(result == null) {
+                                              print("Accesso non riuscito");
+                                            } else {
+                                              print("Accesso riuscito");
+                                              print(result);
 
-                                            Route route = MaterialPageRoute(builder: (context) => Wrapper());
-                                            Navigator.push(context, route);
+                                              Route route = MaterialPageRoute(builder: (context) => Wrapper());
+                                              Navigator.push(context, route);
+                                            }
                                           }
                                         },
                                         color: Color(0x00000000),

@@ -2,7 +2,7 @@ import 'package:qrscan/qrscan.dart' as scanner;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:smartqueue/Servire.dart';
-//import 'package:smartqueue/Servire.dart';
+import 'package:smartqueue/Wrapper.dart';
 import 'package:smartqueue/homepage.dart';
 
 
@@ -130,42 +130,82 @@ String barcode_acquisito;
                         )
                     ),
                   ),
-                  Positioned(
-                    left: 120,
-                    right: 120,
-                    top: 65,
-                    child: Text("Il prossimo è:",
-                      style: TextStyle(fontSize: 25.0,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,),
-                    ),
-                  ),
-
-                  Positioned(
-                    left: 50,
-                    right: 50,
-                    top: 100,
-                    child: prossimonumero(),
-                  ),
-
-                  Positioned(
-                    left: 50,
-                    right: 50,
-                    top: 400,
-                    child: FlatButton(
-                      textColor: Colors.black,
-                      color: Colors.transparent,
-                      onPressed: () {
-                        // Respond to button press
-                        change();
-                      },
-                      child: Text(
-                        "Acquisisci numero",
-                        style: TextStyle(fontSize: 25.0, color: Colors.white,fontWeight: FontWeight.bold,),
-                      ),
-                      padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40),
-                      shape: StadiumBorder(
-                        side: BorderSide(color: Colors.white, width: 2,),
+                  SingleChildScrollView(
+                    child: Center(
+                      child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 10.0),
+                          child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Padding(
+                                  padding: EdgeInsets.only(top: 35, left: 60, right: 30),
+                                  child: Text("Il prossimo è:",
+                                    style: TextStyle(fontSize: 25.0,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,),
+                                  ),
+                                ),
+                                Padding(padding: EdgeInsets.only(top: 10)),
+                                Padding(
+                                  padding: EdgeInsets.only(top: 20, left: 50, right: 30),
+                                  child: prossimonumero(),
+                                ),
+                                Padding(padding: EdgeInsets.only(top: 10)),
+                                Padding(
+                                  padding: EdgeInsets.only(top: 35, left: 30, right: 30),
+                                  child: SizedBox(
+                                    width: double.infinity,
+                                    // height: double.infinity,
+                                    child: FlatButton(
+                                      textColor: Colors.black,
+                                      color: Colors.transparent,
+                                      onPressed: () {
+                                        // Respond to button press
+                                        change();
+                                      },
+                                      child: Text(
+                                        "Acquisisci numero",
+                                        style: TextStyle(fontSize: 18.0, color: Colors.white,fontWeight: FontWeight.bold,),
+                                      ),
+                                      padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40),
+                                      shape: StadiumBorder(
+                                        side: BorderSide(color: Colors.white, width: 2,),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Padding(padding: EdgeInsets.only(top: 5)),
+                                Padding(
+                                  padding: EdgeInsets.only(top: 20, left: 30, right: 30),
+                                  child: SizedBox(
+                                    width: double.infinity,
+                                    // height: double.infinity,
+                                    child: FlatButton(
+                                      textColor: Colors.black,
+                                      color: Colors.transparent,
+                                      onPressed: () {
+                                        leaveCoda(id_organizzazione,id_prossimo); //id_coda
+                                        Route route = MaterialPageRoute(builder: (context) => Wrapper());
+                                        Navigator.push(context, route);
+                                      },
+                                      child: Text(
+                                        "Salta cliente",
+                                        style: TextStyle(fontSize: 20.0, color: Colors.white,fontWeight: FontWeight.bold,),
+                                      ),
+                                      padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40),
+                                      shape: StadiumBorder(
+                                        side: BorderSide(color: Colors.white, width: 2,),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                            ]),
+                          )
+                      ]
                       ),
                     ),
                   ),
@@ -253,5 +293,12 @@ class CircleButton extends StatelessWidget {
       ),
     );
   }
+}
+
+
+void leaveCoda(String id_organizzazione,String id_elemento_in_coda){
+  firestoreInstance.collection("organizzazioni").doc(id_organizzazione).collection("coda").doc(id_elemento_in_coda).delete().then((_) {
+    print("success!");
+  });
 }
 

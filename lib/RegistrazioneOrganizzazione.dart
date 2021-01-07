@@ -38,16 +38,7 @@ class MyCustomFormState extends State<MyCustomForm> {
   final Autenticazione autenticazione = Autenticazione();
 
   final _formKey = GlobalKey<FormState>();
-  String nomeOr, nomeT,cognomeT;
-
-  String _validateName(String value) {
-    if (value.isEmpty) return 'Name is required.';
-    final RegExp nameExp = RegExp(r'^[A-Za-z ]+$');
-    if (!nameExp.hasMatch(value)) {
-      return 'Please enter only alphabetical characters.';
-    }
-    return null;
-  }
+  String nomeOr, nomeT,cognomeT, email_titolare1, password_titolare1;
 
   @override
   Widget build(BuildContext context) {
@@ -98,7 +89,14 @@ class MyCustomFormState extends State<MyCustomForm> {
                                       onChanged: (String value) {
                                         this.nomeOr = value;
                                       },
-                                      validator: _validateName,
+                                      validator: (nomeOr){
+                                        if (nomeOr.isEmpty) return 'Nome Organizzazione is required.';
+                                        final RegExp nameExp = RegExp(r'^[A-Za-z0-9 ]+$');
+                                        if (!nameExp.hasMatch(nomeOr)) {
+                                          return 'Please enter only alphabetical or numeric characters.';
+                                        }
+                                        return null;
+                                      },
                                     ),
                                   ),
                                 ),
@@ -119,7 +117,14 @@ class MyCustomFormState extends State<MyCustomForm> {
                                       onChanged: (String value) {
                                         this.nomeT = value;
                                       },
-                                      validator: _validateName,
+                                      validator: (nomeT){
+                                        if (nomeT.isEmpty) return 'Name is required.';
+                                        final RegExp nameExp = RegExp(r'^[A-Za-z ]+$');
+                                        if (!nameExp.hasMatch(nomeT)) {
+                                          return 'Please enter only alphabetical characters.';
+                                        }
+                                        return null;
+                                      },
                                     ),
                                   ),
                                 ),
@@ -140,7 +145,14 @@ class MyCustomFormState extends State<MyCustomForm> {
                                       onChanged: (String value) {
                                         this.cognomeT = value;
                                       },
-                                      validator: _validateName,
+                                      validator: (cognomeT){
+                                        if (cognomeT.isEmpty) return 'Cognome is required.';
+                                        final RegExp nameExp = RegExp(r'^[A-Za-z ]+$');
+                                        if (!nameExp.hasMatch(cognomeT)) {
+                                          return 'Please enter only alphabetical characters.';
+                                        }
+                                        return null;
+                                      },
                                     ),
                                   ),
                                 ),
@@ -160,6 +172,15 @@ class MyCustomFormState extends State<MyCustomForm> {
                                       keyboardType: TextInputType.emailAddress,
                                       onChanged: (String value) {
                                         email_titolare = value;
+                                        email_titolare1 = email_titolare;
+                                      },
+                                      validator: (email_titolare1){
+                                        if (email_titolare1.isEmpty) return 'Email is required.';
+                                        final RegExp nameExp = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+                                        if (!nameExp.hasMatch(email_titolare1)) {
+                                          return 'Please enter a validate email .';
+                                        }
+                                        return null;
                                       },
                                     ),
                                   ),
@@ -177,6 +198,17 @@ class MyCustomFormState extends State<MyCustomForm> {
                                           password_titolare = value;
                                         });
                                       },
+                                      validator: (password_titolare1){
+                                        if (password_titolare1.isEmpty) return 'Password is required.';
+                                        final RegExp nameExp = RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$');
+                                        if(password_titolare1.length < 8){
+                                          return 'Please enter a Minimum 8 characters';
+                                        }
+                                        else if (!nameExp.hasMatch(password_titolare1)) {
+                                          return 'Please enter a Minimum 1 Upper case,\n1 lowercase,1 Numeric Number.';
+                                        }
+                                        return null;
+                                      },
                                     ),
                                   ),
                                 ),
@@ -186,19 +218,19 @@ class MyCustomFormState extends State<MyCustomForm> {
                                       width: double.infinity,
                                       child: RaisedButton(
                                         onPressed: () async {
-                                          print("Registrazione Nome Organizzazione=$nomeOr Nome titolare=$nomeT Cognome Titolare=$cognomeT email=$email_titolare password=$password_titolare");
-                                          Usr.User  result = await autenticazione.registrazione(email_titolare, password_titolare);
-                                          if(result == null) {
-                                            print("Registrazione non riuscita");
-                                          } else {
-                                            print("Registrazione effettuata con successo");
-                                            print(result);
-                                            AddOrganizzazione().addOrganizzazione(result.uid ,nomeOr, nomeT, cognomeT);
-                                            Route route = MaterialPageRoute(builder: (context) => Wrapper());
-                                            Navigator.push(context, route);
+                                          if (_formKey.currentState.validate()){
+                                            print("Registrazione Nome Organizzazione=$nomeOr Nome titolare=$nomeT Cognome Titolare=$cognomeT email=$email_titolare password=$password_titolare");
+                                            Usr.User  result = await autenticazione.registrazione(email_titolare, password_titolare);
+                                            if(result == null) {
+                                              print("Registrazione non riuscita");
+                                            } else {
+                                              print("Registrazione effettuata con successo");
+                                              print(result);
+                                              AddOrganizzazione().addOrganizzazione(result.uid ,nomeOr, nomeT, cognomeT);
+                                              Route route = MaterialPageRoute(builder: (context) => Wrapper());
+                                              Navigator.push(context, route);
+                                            }
                                           }
-
-
                                         },
                                         color: Color(0x00000000),
                                         elevation: 50,
