@@ -3,7 +3,6 @@ import 'package:smartqueue/homepage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-
 final firestoreInstance = FirebaseFirestore.instance;
 String id_organizzazione;
 String id_elemento_in_coda;
@@ -33,7 +32,6 @@ Widget numero_attualmenteServito(String id_org) {
           }
         }
 
-
         if (snapshot.hasError) {
           return Text('Impossibile recuperare il tuo numero');
         }
@@ -47,31 +45,37 @@ Widget numero_attualmenteServito(String id_org) {
 Widget stima(String id_org) {
   CollectionReference coda =
   FirebaseFirestore.instance.collection('organizzazioni').doc(id_org).collection("coda");
-  int max;
-  String ultima_stima;
-  //QuerySnapshot snapshot = await coda.get();
+  String tempi_cliente;
+  int media=0;
+  int stima=0;
 
   return StreamBuilder<QuerySnapshot>(
       stream: coda.snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        int counter=0;
+        int counter_attesa=0;
+        int somma=0;
         if(snapshot.data == null) return Text("impossibile recuperare il numero");
-        for(int i=0;i<snapshot.data.docs.length;i++)
-        {
-          if(snapshot.data.docs[i].data()['servito']=="servito"){
-            max=snapshot.data.docs[i].data()['numero'];
-            ultima_stima=snapshot.data.docs[i].data()['stima'];
-            break;
-          }
-        }
-        for(int j=0;j<snapshot.data.docs.length;j++){
-          if(snapshot.data.docs[j].data()['servito']=="servito"){
-            if(snapshot.data.docs[j].data()['numero']>max){
-              max=snapshot.data.docs[j].data()['numero'];
-              ultima_stima=snapshot.data.docs[j].data()['stima'];
+        for(int i=0;i<snapshot.data.docs.length;i++) {
+          if(snapshot.data.docs[i].data()['servito']=="servito") {
+            counter++;
+            tempi_cliente = snapshot.data.docs[i].data()['stima'];
+            List<String> split = tempi_cliente.split(":");
+            somma = somma + int.parse(split[0]) * 60;
+            somma = somma + int.parse(split[1]);
+          }else {
+            if(snapshot.data.docs[i].data()['numero']<int.parse(num)){
+              counter_attesa++;
+              print("prova...."+counter_attesa.toString());
             }
           }
         }
-
+        media=(somma/counter).toInt();
+        print("LA MEDIA E': "+media.toString());
+        print("COUNTER ATTESA:"+counter_attesa.toString());
+        stima=media*counter_attesa;
+        int ore=(stima/60).toInt();
+        int min=stima%60;
 
         if (snapshot.hasError) {
           return Text('Impossibile recuperare la stima');
@@ -79,7 +83,7 @@ Widget stima(String id_org) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Text("Loading");
         }
-        return Text(ultima_stima??'0');
+        return Text(ore.toString()+" ore "+min.toString()+" minuti"??'0');
       });
 }
 

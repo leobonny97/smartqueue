@@ -139,10 +139,11 @@ String barcode_acquisito;
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 10.0),
                           child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: <Widget>[
                                 Padding(
-                                  padding: EdgeInsets.only(top: 35, left: 60, right: 30),
+                                  padding: EdgeInsets.only(top: 35, left: 50, right: 50),
                                   child: Text("Il prossimo è:",
                                     style: TextStyle(fontSize: 25.0,
                                       color: Colors.white,
@@ -151,7 +152,7 @@ String barcode_acquisito;
                                 ),
                                 Padding(padding: EdgeInsets.only(top: 10)),
                                 Padding(
-                                  padding: EdgeInsets.only(top: 20, left: 50, right: 30),
+                                  padding: EdgeInsets.only(top: 20, left: 50, right: 50),
                                   child: prossimonumero(),
                                 ),
                                 Padding(padding: EdgeInsets.only(top: 10)),
