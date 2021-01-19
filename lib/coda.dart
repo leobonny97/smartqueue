@@ -2,11 +2,13 @@ import 'package:smartqueue/MostraQRCodeCliente.dart';
 import 'package:smartqueue/homepage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 final firestoreInstance = FirebaseFirestore.instance;
 String id_organizzazione;
 String id_elemento_in_coda;
 String num;
+FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 
 Widget numero_attualmenteServito(String id_org) {
   CollectionReference coda =
@@ -32,6 +34,18 @@ Widget numero_attualmenteServito(String id_org) {
           }
         }
 
+        if(max==null){
+          max=0;
+          for(int j=0;j<snapshot.data.docs.length;j++){
+            if(snapshot.data.docs[j].data()['servito']=="servito"){
+              if(snapshot.data.docs[j].data()['numero']>max){
+                max=snapshot.data.docs[j].data()['numero'];
+              }
+            }
+          }
+        }
+
+        _showNotificationWithDefaultSound("Stiamo servendo il numero: "+max.toString()+"\n Il tuo numero è: "+num);
         if (snapshot.hasError) {
           return Text('Impossibile recuperare il tuo numero');
         }
@@ -66,13 +80,10 @@ Widget stima(String id_org) {
           }else {
             if(snapshot.data.docs[i].data()['numero']<int.parse(num)){
               counter_attesa++;
-              print("prova...."+counter_attesa.toString());
             }
           }
         }
         media=(somma/counter).toInt();
-        print("LA MEDIA E': "+media.toString());
-        print("COUNTER ATTESA:"+counter_attesa.toString());
         stima=media*counter_attesa;
         int ore=(stima/60).toInt();
         int min=stima%60;
@@ -122,6 +133,20 @@ class Coda extends StatefulWidget {
 }
 
 class _CodaState extends State<Coda>{
+
+  @override
+  initState() {
+    super.initState();
+    // initialise the plugin. app_icon needs to be a added as a drawable resource to the Android head project
+    // If you have skipped STEP 3 then change app_icon to @mipmap/ic_launcher
+    var initializationSettingsAndroid =
+    new AndroidInitializationSettings('@mipmap/ic_launcher');
+    var initializationSettingsIOS = new IOSInitializationSettings();
+    var initializationSettings = new InitializationSettings(android: initializationSettingsAndroid, iOS:initializationSettingsIOS );
+    flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
+    flutterLocalNotificationsPlugin.initialize(initializationSettings,
+        onSelectNotification: onSelectNotification);
+  }
 
   String number="0";
   String id_org;
@@ -231,6 +256,35 @@ class _CodaState extends State<Coda>{
       ),
     );
   }
+
+  Future onSelectNotification(String payload) async {
+    showDialog(
+      context: context,
+      builder: (_) {
+        return new AlertDialog(
+          title: Text("PayLoad"),
+          content: Text("Payload : $payload"),
+        );
+      },
+    );
+  }
+
+  // If you have skipped step 4 then Method 1 is not for you
+
+}
+// Method 2
+Future _showNotificationWithDefaultSound(String contenuto) async {
+  var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
+      'your channel id', 'your channel name', 'your channel description',
+      importance: Importance.max, priority: Priority.high);
+  var iOSPlatformChannelSpecifics = new IOSNotificationDetails();
+  var platformChannelSpecifics = new NotificationDetails(android:androidPlatformChannelSpecifics, iOS: iOSPlatformChannelSpecifics );
+  await flutterLocalNotificationsPlugin.show(
+    1,
+    'Aggiornamento coda',
+    contenuto,
+    platformChannelSpecifics,
+  );
 }
 
 class CircleButton extends StatelessWidget {
