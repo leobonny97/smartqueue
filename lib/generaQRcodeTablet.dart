@@ -8,12 +8,10 @@ import 'package:smartqueue/homepage.dart';
 import 'package:smartqueue/homepageTablet.dart';
 
 int numero_tablet;
-
+int numero_tablet_precedente=-1;
 class generaQRcodeTablet extends StatefulWidget {
-
   @override
   _MyAppState createState() => _MyAppState();
-
 }
 
 class _MyAppState extends State<generaQRcodeTablet> {
@@ -117,11 +115,11 @@ class _MyAppState extends State<generaQRcodeTablet> {
 
   Widget getNumero(Uint8List bytes) {
     CollectionReference collectionReference = FirebaseFirestore.instance.collection("organizzazioni").doc(id_organizzazione_tablet).collection("coda");
-
     return StreamBuilder<QuerySnapshot>(
         stream: collectionReference.snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
 
+          if(snapshot.data == null) return Text("impossibile recuperare il qrcode");
           if (snapshot.hasError) {
             return Text('Impossibile recuperare la coda');
           }
@@ -147,26 +145,16 @@ class _MyAppState extends State<generaQRcodeTablet> {
           });
 
           numero_tablet = numero_tablet + 1;
-
-          /*
-          collectionReference.snapshots().listen((event) {
-            event.docChanges.forEach((element)  async {
-              if(element.type == DocumentChangeType.added){
-                await _generateBarCode(id_organizzazione+" "+numero.toString());
-              }
-            });
-          });*/
-
-
+          if(numero_tablet_precedente != numero_tablet){
+            _generateBarCode(id_organizzazione_tablet+" "+numero_tablet.toString());
+            numero_tablet_precedente=numero_tablet;
+          }
           print("IL NUMERO TABLET" +numero_tablet.toString());
           print("ID ORG: "+id_organizzazione_tablet.toString());
 
           return new SizedBox(
             height: 300,
-            child: bytes.isEmpty
-                ? _generateBarCode(id_organizzazione_tablet+" "+numero_tablet.toString())
-                : Image.memory(bytes),
-
+            child: Image.memory(bytes),
           );
         });
   }

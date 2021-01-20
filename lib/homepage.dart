@@ -6,7 +6,7 @@ import 'package:smartqueue/Wrapper.dart';
 import 'package:smartqueue/benvenuto_Cliente.dart';
 import 'Login_Registrazione.dart';
 import 'package:smartqueue/Model/User.dart' as Usr;
-
+import 'package:smartqueue/homepageTablet.dart';
 String id_organizzazione;
 
 void main() async{
@@ -21,16 +21,27 @@ class homepage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamProvider<Usr.User>.value(
-      value: Autenticazione().user,
-      child: MaterialApp(
-        title: _title,
-        home: Scaffold(
-          appBar: AppBar(title: const Text(_title)),
-          body: MyStatelessWidget(),
+    String device = getDeviceType();
+    if(device == "tablet"){
+      //Route route = MaterialPageRoute(builder: (context) => homepageTablet());
+      //Navigator.push(context, route);
+      return StreamProvider<Usr.User>.value(
+        value: Autenticazione().user,
+        child: homepageTablet(),
+      );
+    }else{  //phone
+      return StreamProvider<Usr.User>.value(
+        value: Autenticazione().user,
+        child: MaterialApp(
+          title: _title,
+          home: Scaffold(
+            appBar: AppBar(title: const Text(_title)),
+            body: MyStatelessWidget(),
+          ),
         ),
-      ),
-    );
+      );
+    }
+
   }
 }
 
@@ -127,6 +138,8 @@ class MyStatelessWidget extends StatelessWidget {
         )
     );
   }
-
-
+}
+String getDeviceType() {
+  final data = MediaQueryData.fromWindow(WidgetsBinding.instance.window);
+  return data.size.shortestSide < 600 ? 'phone' :'tablet';
 }

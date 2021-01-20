@@ -7,7 +7,7 @@ import 'package:qrscan/qrscan.dart' as scanner;
 import 'package:smartqueue/homepage.dart';
 
 int numero;
-
+int numero_precedente=-1;
 class QRCode extends StatefulWidget {
 
   @override
@@ -120,6 +120,7 @@ class _MyAppState extends State<QRCode> {
     return StreamBuilder<QuerySnapshot>(
         stream: collectionReference.snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if(snapshot.data == null) return Text("impossibile recuperare il qrcode");
           if (snapshot.hasError) {
             return Text('Impossibile recuperare la coda');
           }
@@ -145,25 +146,20 @@ class _MyAppState extends State<QRCode> {
           });
 
           numero = numero + 1;
+          print("num precedente: "+numero_precedente.toString());
+          print("num : "+numero.toString());
+          if(numero_precedente != numero){
+            print("diverso");
+            _generateBarCode(id_organizzazione+" "+numero.toString());
+            numero_precedente=numero;
+          }
+          print("IL NUMERO TABLET" +numero.toString());
+          print("ID ORG: "+id_organizzazione.toString());
 
-          /*
-          collectionReference.snapshots().listen((event) {
-            event.docChanges.forEach((element)  async {
-              if(element.type == DocumentChangeType.added){
-                await _generateBarCode(id_organizzazione+" "+numero.toString());
-              }
-            });
-          });*/
-
-
-          print(numero.toString());
 
           return new SizedBox(
             height: 190,
-            child: bytes.isEmpty
-                ? _generateBarCode(id_organizzazione+" "+numero.toString())
-                : Image.memory(bytes),
-
+            child: Image.memory(bytes),
           );
         });
   }
