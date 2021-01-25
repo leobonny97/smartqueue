@@ -18,6 +18,7 @@ Widget numero_attualmenteServito(String id_org) {
   return StreamBuilder<QuerySnapshot>(
       stream: coda.snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        max=null;
         if(snapshot.data == null) return Text("impossibile recuperare il numero");
         for(int i=0;i<snapshot.data.docs.length;i++)
         {
@@ -45,7 +46,16 @@ Widget numero_attualmenteServito(String id_org) {
           }
         }
 
-        _showNotificationWithDefaultSound("Stiamo servendo il numero: "+max.toString()+"\n Il tuo numero è: "+num);
+
+        if(max==int.parse(num))
+          {
+            _showNotificationWithDefaultSound("È il tuo turno");
+          }
+        else
+          {
+            _showNotificationWithDefaultSound("Stiamo servendo il numero: "+max.toString()+"\n Il tuo numero è: "+num);
+          }
+
         if (snapshot.hasError) {
           return Text('Impossibile recuperare il tuo numero');
         }
