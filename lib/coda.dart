@@ -47,14 +47,8 @@ Widget numero_attualmenteServito(String id_org) {
         }
 
 
-        if(max==int.parse(num))
-          {
-            _showNotificationWithDefaultSound("È il tuo turno");
-          }
-        else
-          {
-            _showNotificationWithDefaultSound("Stiamo servendo il numero: "+max.toString()+"\n Il tuo numero è: "+num);
-          }
+        _showNotificationWithDefaultSound("Stiamo servendo il numero: "+max.toString()+"\n Il tuo numero è: "+num);
+
 
         if (snapshot.hasError) {
           return Text('Impossibile recuperare il tuo numero');
