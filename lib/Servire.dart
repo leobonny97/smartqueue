@@ -20,12 +20,12 @@ class MyApp_servire extends StatelessWidget {
 
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: "SmartQueue",
       theme: ThemeData(
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(id_elemento_in_coda: id_prossimo, numeroAcquisito: num,),
+      home: MyHomePage(id_elemento_in_coda: id_prossimo, numeroAcquisito: num),
     );
   }
 }
@@ -90,7 +90,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   Positioned(
                     left: 100,
-                    right: 0,
+                    right: 50,
                     top: 65,
                     child: Text("Si serve il numero:",
                       style: TextStyle(fontSize: 25.0,
@@ -101,7 +101,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   Positioned(
                       left: 50,
                       right: 50,
-                      top: 100,
+                      top: 150,
                       child: CircleButton(number: int.parse(numeroAcquisito),)
                   ),
                   Positioned(
